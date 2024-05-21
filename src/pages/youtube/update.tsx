@@ -4,24 +4,24 @@ import { Container } from "modules";
 import { Button, Spin } from "antd";
 import { useHooks } from "hooks";
 
-const Video = ({ showEditModal, selectedCard }: any): JSX.Element => {
+const YouTube = ({ showEditModal, selectedCard }: any): JSX.Element => {
   const { get, t } = useHooks();
   return (
     <div>
       <Container.Form
-        url={`/video/${get(selectedCard, "_id")}`}
+        url={`/youtubes/${get(selectedCard, "_id")}`}
         method="put"
-        name="video"
+        name="youtubes"
         fields={[
           {
-            name: "url",
+            name: "link",
             type: "string",
-            value: get(selectedCard, "url"),
+            value: get(selectedCard, "link"),
             required: true,
           },
         ]}
         onSuccess={(data, resetForm, query) => {
-          query.invalidateQueries({ queryKey: ["video"] });
+          query.invalidateQueries({ queryKey: ["youtubes"] });
           showEditModal(false)
         }}
         onError={(error) => {
@@ -34,9 +34,9 @@ const Video = ({ showEditModal, selectedCard }: any): JSX.Element => {
               <Field
                 component={Fields.Input}
                 rootClassName="mb-[30px] w-full"
-                name="url"
+                name="link"
                 type="text"
-                placeholder={t("url")}
+                placeholder={t("link")}
                 size="large"
               />
               <Button
@@ -53,4 +53,4 @@ const Video = ({ showEditModal, selectedCard }: any): JSX.Element => {
   );
 };
 
-export default Video;
+export default YouTube;

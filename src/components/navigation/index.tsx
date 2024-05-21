@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-import { FormOutlined, AppstoreAddOutlined, SolutionOutlined, PictureOutlined, ShoppingOutlined, CommentOutlined, TrophyOutlined, StarOutlined, OrderedListOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { FormOutlined, AppstoreAddOutlined, StarOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
   Translation,
@@ -47,58 +47,28 @@ const Navigation: React.FC = () => {
       route: "/blogs",
     },
     {
-      key: "categories",
-      label: "Kategoriyalar",
-      icon: <OrderedListOutlined />,
-      route: "/categories",
-    },
-    {
-      key: "comments",
-      label: "Komentariyalar",
-      icon: <CommentOutlined />,
-      route: "/comments",
-    },
-    {
       key: "products",
       label: "Mahsulotlar",
       icon: <AppstoreAddOutlined />,
       route: "/products",
     },
     {
-      key: "orders",
-      label: "Buyurtmalar",
-      icon: <ShoppingOutlined />,
-      route: "/orders",
+      key: "certificates",
+      label: "Sertifikatlar",
+      icon: <AppstoreAddOutlined />,
+      route: "/certificates",
     },
     {
-      key: "vacancies",
-      label: "Vakansiyalar",
-      icon: <SolutionOutlined />,
-      route: "/vacancies",
-    },
-    {
-      key: "brands",
-      label: "Brendlar",
+      key: "partners",
+      label: "Hamkorlar",
       icon: <StarOutlined />,
-      route: "/brands",
+      route: "/partners",
     },
     {
-      key: "galleries",
-      label: "Galereya",
-      icon: <PictureOutlined />,
-      route: "/galleries",
-    },
-    {
-      key: "achievements",
-      label: "Yutuqlar",
-      icon: <TrophyOutlined />,
-      route: "/achievements",
-    },
-    {
-      key: "video",
-      label: "Videolar",
-      icon: <VideoCameraOutlined />,
-      route: "/video",
+      key: "youtubes",
+      label: "YouTube",
+      icon: <StarOutlined />,
+      route: "/youtubes",
     },
     {
       key: "translations",

@@ -4,26 +4,26 @@ import { Container } from "modules";
 import { Button, Spin } from "antd";
 import { useHooks } from "hooks";
 
-const Brand = ({ showEditModal, selectedCard }: any): JSX.Element => {
+const Partner = ({ showEditModal, selectedCard }: any): JSX.Element => {
   const { get, t } = useHooks();
   return (
     <div className="">
       <Container.Form
         className="w-full"
-        url={`/brands/${get(selectedCard, "_id")}`}
+        url={`/partners/${get(selectedCard, "_id")}`}
         method="put"
-        name="brands"
+        name="partners"
         configs={{
           headers: { 'Content-Type': 'multipart/form-data' },
         }}
         fields={[
           {
-            name: "images",
+            name: "image",
             required: true,
           },
         ]}
         onSuccess={(data, resetForm, query) => {
-          query.invalidateQueries({ queryKey: ["brands"] });
+          query.invalidateQueries({ queryKey: ["partners"] });
           showEditModal(false)
         }}
         onError={(error) => {
@@ -37,7 +37,7 @@ const Brand = ({ showEditModal, selectedCard }: any): JSX.Element => {
                 component={Fields.FileUpload}
                 setFieldValue={setFieldValue}
                 className="mb-4"
-                name="images"
+                name="image"
                 accept="image/png, image/jpeg, image/jpg"
               />
               <Button
@@ -54,4 +54,4 @@ const Brand = ({ showEditModal, selectedCard }: any): JSX.Element => {
   );
 };
 
-export default Brand;
+export default Partner;

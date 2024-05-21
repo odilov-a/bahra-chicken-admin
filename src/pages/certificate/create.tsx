@@ -4,7 +4,7 @@ import { Fields, Button } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
-const Achievement = ({
+const Certificate = ({
   showCreateModal,
   setSuccess,
 }: any): JSX.Element => {
@@ -12,20 +12,20 @@ const Achievement = ({
   return (
     <div>
       <Container.Form
-        url="/achievements"
+        url="/certificates"
         method="post"
-        name="achievements"
+        name="certificates"
         configs={{
           headers: { "Content-Type": "multipart/form-data" },
         }}
         fields={[
           {
-            name: "images",
+            name: "image",
             required: true,
           },
         ]}
         onSuccess={(data, resetForm, query) => {
-          query.invalidateQueries({ queryKey: ["achievements"] });
+          query.invalidateQueries({ queryKey: ["certificates"] });
           setSuccess((prev: any) => !prev);
           resetForm();
           showCreateModal(false);
@@ -41,7 +41,7 @@ const Achievement = ({
                 component={Fields.FileUpload}
                 setFieldValue={setFieldValue}
                 rootClassName="mb-[40px]"
-                name="images"
+                name="image"
                 accept="image/png, image/jpeg, image/jpg"
               />
               <Button
@@ -58,4 +58,4 @@ const Achievement = ({
   );
 };
 
-export default Achievement;
+export default Certificate;

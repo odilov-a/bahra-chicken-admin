@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Card, Modal } from "antd";
-import { Container } from "modules";
-import { useHooks, usePost, useGet } from "hooks";
+import { useHooks, useGet } from "hooks";
 import Update from "./update";
 import { Edit } from "assets/images/icons";
 
@@ -22,16 +21,14 @@ const User = () => {
     showEditModal(true);
     setSelectedCard(item);
   };
-
   const { data } = useGet({
-    name: "update-user",
-    url: "contacts",
+    name: "users/update-user",
+    url: "users/update-user",
     onSuccess: (data) => {
     },
     onError: (error) => {
     },
   });
-
   const info = get(data, "data", {})
 
   return (
@@ -58,16 +55,7 @@ const User = () => {
               className="pb-[60px]"
               title={
                 <div className="">
-                  <p>{t("Login")} - {(get(info, "login", ""))}</p>
-                </div>
-              }
-              description={
-                <div className="">
-                  <p><b>{t("Email")}:</b> {(get(info, "email", ""))}</p>
-                  <p><b>{t("phone")}:</b> {(get(info, "phone", ""))}</p>
-                  <p><b>{t("instagram")}:</b> {(get(info, "instagram", ""))}</p>
-                  <p><b>{t("facebook")}:</b> {(get(info, "facebook", ""))}</p>
-                  <p><b>{t("telegram")}:</b> {(get(info, "telegram", ""))}</p>
+                  <p>{t("Login")} - {(get(info, "username", ""))}</p>
                 </div>
               }
             />

@@ -1,153 +1,75 @@
-import { useState } from "react";
-import { Spin, Tabs } from "antd";
-import { Field } from "formik";
-
+import { Spin, Select, Tabs } from "antd";
+import { Field, FieldProps } from "formik";
+import { Fields, Button, AntTextarea } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
-import { Fields, Button, AntTextarea, AntSelect } from "components";
 
-import NoImage from 'assets/images/product-not-found.jpg'
-import { storage } from "services";
-
-
-const Product = ({ showCreateModal, createModal }: any): JSX.Element => {
+const Product = ({ showCreateModal, setSuccess, system }: any): JSX.Element => {
   const { t, get } = useHooks();
-  const [langTab, setLangTab] = useState("Uz")
-  const [optionChange, setOptionChange] = useState(false)
-  const langs = [
-    { title: "O'zbekcha", value: "Uz" },
-    { title: "Русский", value: "Ru" },
-    { title: "English", value: "En" },
-    { title: "Chinesse", value: "Kr" },
-    { title: "Info", value: "info" },
-  ]
-
-  let data = createModal.data && createModal?.data
-  //@ts-ignore
-  const language = storage.get("i18nextLng")?.charAt(0).toUpperCase() + storage.get("i18nextLng").slice(1) || "Uz"
-  console.log(get(data, "category._id"));
+  const { TabPane } = Tabs;
+  const { Option } = Select;
+  const changePattern = (value: any, setFieldValue: any) => {
+    setFieldValue("type", value);
+    console.log("Pattern changed to:", value);
+  };
   return (
     <div>
       <Container.Form
-        url={get(data, "_id") ? `products/${get(data, "_id")}` : "products"}
-        method={get(data, "_id") ? "put" : "post"}
+        url="/products"
+        method="post"
         name="products"
         configs={{
           headers: { "Content-Type": "multipart/form-data" },
         }}
         fields={[
           {
-            name: "productTitleUz",
+            name: "titleUz",
             type: "string",
             required: true,
-            value: get(data, "productTitleUz")
           },
           {
-            name: "productTitleEn",
+            name: "titleRu",
             type: "string",
             required: true,
-            value: get(data, "productTitleEn")
           },
           {
-            name: "productTitleRu",
+            name: "titleEng",
             type: "string",
             required: true,
-            value: get(data, "productTitleRu")
           },
           {
-            name: "productTitleKr",
+            name: "descriptionUz",
             type: "string",
             required: true,
-            value: get(data, "productTitleKr")
           },
           {
-            name: "aboutUz",
+            name: "descriptionRu",
             type: "string",
             required: true,
-            value: get(data, "productTitleUz")
           },
           {
-            name: "aboutEn",
+            name: "descriptionEng",
             type: "string",
             required: true,
-            value: get(data, "aboutEn")
-          },
-          {
-            name: "aboutRu",
-            type: "string",
-            required: true,
-            value: get(data, "aboutRu")
-          },
-          {
-            name: "aboutKr",
-            type: "string",
-            required: true,
-            value: get(data, "aboutKr")
-          },
-          {
-            name: "advantagesUz",
-            type: "string",
-            required: true,
-            value: get(data, "advantagesUz")
-          },
-          {
-            name: "advantagesEn",
-            type: "string",
-            required: true,
-            value: get(data, "advantagesEn")
-          },
-          {
-            name: "advantagesRu",
-            type: "string",
-            required: true,
-            value: get(data, "advantagesRu")
-          },
-          {
-            name: "advantagesKr",
-            type: "string",
-            required: true,
-            value: get(data, "advantagesKr")
-          },
-          {
-            name: "category",
-            type: "string",
-            required: true,
-            // onSubmitValue: (val) => get(val, "_id"),
-            value: get(data, "category"),
           },
           {
             name: "price",
             type: "number",
             required: true,
-            value: get(data, "price"),
           },
           {
-            name: "weight",
-            type: "number",
+            name: "type",
+            type: "string",
             required: true,
-            value: get(data, "weight"),
           },
           {
-            name: "image1",
+            name: "image",
             required: true,
-            onSubmitValue: (val) => typeof val == "string" ? null : val,
-            value: get(data, "image1[0].small")
           },
-          {
-            name: "image2",
-            required: true,
-            onSubmitValue: (val) => typeof val == "string" ? null : val,
-            value: get(data, "image2[0].small")
-          },
-          {
-            name: "image3",
-            required: true,
-            onSubmitValue: (val) => typeof val == "string" ? null : val,
-            value: get(data, "image3[0].small")
-          }
         ]}
         onSuccess={(data, resetForm, query) => {
           query.invalidateQueries({ queryKey: ["products"] });
+          setSuccess((prev: any) => !prev);
           resetForm();
           showCreateModal(false);
         }}
@@ -155,123 +77,114 @@ const Product = ({ showCreateModal, createModal }: any): JSX.Element => {
           console.log("Error", error);
         }}
       >
-        {({ isSubmitting, setFieldValue, errors, values }) => {
+        {({ isSubmitting, setFieldValue }) => {
           return (
-            <div>
-              <div className="lang-tabs">
-                {langs.map((tab) => (
-                  <button
-                    key={tab.title}
-                    type="button"
-                    className={langTab == tab.value ? `selected-tab lang-tab` : "lang-tab"}
-                    onClick={() => (
-                      setLangTab(tab.value)
-                    )}>
-                    {t(tab?.title)}
-                  </button>
-                ))}
-              </div>
-              <div className="w-full mt-[30px]">
-                {langTab !== "info" && <div>
+            <Spin spinning={isSubmitting} tip="Verifying">
+              <Tabs defaultActiveKey="uz" className="w-full">
+                <TabPane tab={t("Uzbek")} key="uz">
                   <Field
-                    rootClassName="mb-6"
+                    rootClassName="mb-[30px]"
                     component={Fields.Input}
-                    name={`productTitle${langTab}`}
+                    name="titleUz"
                     type="text"
-                    placeholder={t(`productTitle${langTab}`)}
+                    placeholder={t("titleUz")}
+                    size="large"
+                  />
+                  <Field
+                    rootClassName=" w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
+                    component={AntTextarea}
+                    name="descriptionUz"
+                    type="text"
+                    placeholder={t("descriptionUz")}
+                    rows={3}
+                    size="large"
+                  />
+                </TabPane>
+                <TabPane tab={t("Russian")} key="ru">
+                  <Field
+                    rootClassName="mb-[30px]"
+                    component={Fields.Input}
+                    name="titleRu"
+                    type="text"
+                    placeholder={t("titleRu")}
                     size="large"
                   />
                   <Field
                     rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
                     component={AntTextarea}
-                    name={`about${langTab}`}
+                    name="descriptionRu"
                     type="text"
-                    placeholder={t(`about${langTab}`)}
+                    placeholder={t("descriptionRu")}
+                    rows={3}
+                    size="large"
+                  />
+                </TabPane>
+                <TabPane tab={t("English")} key="en">
+                  <Field
+                    rootClassName="mb-[30px]"
+                    component={Fields.Input}
+                    name="titleEng"
+                    type="text"
+                    placeholder={t("titleEn")}
                     size="large"
                   />
                   <Field
                     rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
                     component={AntTextarea}
-                    name={`advantages${langTab}`}
+                    name="descriptionEng"
                     type="text"
-                    placeholder={t(`advantages${langTab}`)}
+                    placeholder={t("descriptionEn")}
+                    rows={3}
                     size="large"
                   />
-                  <div className="flex justify-end">
-                    <Button
-                      title={t("Next")}
-                      size="large"
-                      htmlType="button"
-                      onClick={() => setLangTab(langTab == "Uz" ? "Ru" : langTab == "Ru" ? "En" : langTab == "En" ? "Kr" : "info")}
-                    />
+                </TabPane>
+                <TabPane tab={t("Info")} key="zh">
+                  <div className="flex justify-center">
+                    <div className="flex gap-[70px]">
+                      <Field
+                        component={Fields.FileUpload}
+                        setFieldValue={setFieldValue}
+                        rootClassName="mb-[30px]"
+                        name="image"
+                        accept="image/png, image/jpeg, image/jpg"
+                      />
+                      <Field
+                        rootClassName="mb-[30px]"
+                        component={Fields.Input}
+                        name="price"
+                        type="number"
+                        placeholder={t("price")}
+                        size="large"
+                      />
+                    </div>
+                    <div>
+                    <Field name="type">
+                      {({ field, form }: FieldProps) => (
+                        <Select
+                          className="w-full"
+                          defaultValue={get(system, "unripe")}
+                          size={"large"}
+                          onChange={(value: any) => {
+                            form.setFieldValue(field.name, value);
+                            changePattern(value, form.setFieldValue);
+                          }}
+                        >
+                          <Option value={"unripe"}>{t("unripe")}</Option>
+                          <Option value={"halfReady"}>{t("halfReady")}</Option>
+                        </Select>
+                      )}
+                    </Field>
+                    </div>
                   </div>
-                </div>}
-                {langTab == "info" && <div>
-                  <Field
-                    component={Fields.AntAsyncSelect}
-                    name="category"
-                    placeholder={t("category")}
-                    url="categories"
-                    optionLabel={`categoryName${language}`}
-                    optionValue="_id"
-                    onChange={(option: { [key: string]: any }) => {
-                      setFieldValue("category", option);
-                      setOptionChange(true)
-                    }}
-                    className="w-full mb-[20px]"
-                  />
-                  <div className="flex items-center justify-between">
-                    <Field
-                      rootClassName="w-[94%]"
-                      component={Fields.Input}
-                      name="price"
-                      type="number"
-                      placeholder={t("Narx")}
-                      size="large"
-                    />
-                    <p className="">
-                      {t("so'm")}
-                    </p>
-                  </div>
-                  <Field
-                    rootClassName="mt-6"
-                    component={Fields.Input}
-                    name="weight"
-                    type="number"
-                    placeholder={t("Ogirlik")}
+                  <Button
+                    title={t("Saqlash")}
+                    className="w-full mt-[20px]"
+                    htmlType="submit"
                     size="large"
                   />
-                  <div className="flex justify-between items-end mt-6">
-                    <Field
-                      component={Fields.FileUpload}
-                      setFieldValue={setFieldValue}
-                      rootClassName="mb-[40px]"
-                      name="image1"
-                    />
-                    <Field
-                      component={Fields.FileUpload}
-                      setFieldValue={setFieldValue}
-                      rootClassName="mb-[40px]"
-                      name="image2"
-                    />
-                    <Field
-                      component={Fields.FileUpload}
-                      setFieldValue={setFieldValue}
-                      rootClassName="mb-[40px]"
-                      name="image3"
-                    />
-                  </div>
-                  <div className="flex justify-end mt-[20px]">
-                    <Button
-                      title={t("Save")}
-                      size="large"
-                      onClick={() => get(data, "category._id") && !optionChange ? setFieldValue("category", get(data, "category._id")) : ""}
-                      htmlType="submit"
-                    />
-                  </div>
-                </div>}
-              </div>
-            </div>
+                </TabPane>
+              </Tabs>
+            </Spin>
           );
         }}
       </Container.Form>

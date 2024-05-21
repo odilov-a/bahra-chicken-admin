@@ -1,62 +1,79 @@
-import { Spin, Tabs } from "antd";
+import { Fields, AntTextarea } from "components";
 import { Field } from "formik";
-import { Fields, Button, AntTextarea } from "components";
 import { Container } from "modules";
+import { Button, Spin, Tabs } from "antd";
 import { useHooks } from "hooks";
 
-const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
-  const { t } = useHooks();
+const Partner = ({ showEditModal, selectedCard }: any): JSX.Element => {
+  const { get, t } = useHooks();
   const { TabPane } = Tabs;
   return (
     <div>
       <Container.Form
-        url="/blogs"
-        method="post"
-        name="blogs"
+        url={`/products/${get(selectedCard, "_id")}`}
+        method="put"
+        name="products"
         configs={{
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 'Content-Type': 'multipart/form-data' },
         }}
         fields={[
           {
             name: "titleUz",
             type: "string",
             required: true,
+            value: get(selectedCard, "titleUz"),
           },
           {
             name: "titleRu",
             type: "string",
             required: true,
+            value: get(selectedCard, "titleRu"),
           },
           {
             name: "titleEng",
             type: "string",
             required: true,
+            value: get(selectedCard, "titleEng"),
           },
           {
             name: "descriptionUz",
             type: "string",
             required: true,
+            value: get(selectedCard, "descriptionUz"),
           },
           {
             name: "descriptionRu",
             type: "string",
             required: true,
+            value: get(selectedCard, "descriptionRu"),
           },
           {
             name: "descriptionEng",
             type: "string",
             required: true,
+            value: get(selectedCard, "descriptionEng"),
+          },
+          {
+            name: "price",
+            type: "number",
+            required: true,
+            value: get(selectedCard, "price"),
+          },
+          {
+            name: "type",
+            type: "string",
+            required: true,
+            value: get(selectedCard, "type"),
           },
           {
             name: "image",
             required: true,
+            value: get(selectedCard, "image1[0].small")
           },
         ]}
         onSuccess={(data, resetForm, query) => {
-          query.invalidateQueries({ queryKey: ["blogs"] });
-          setSuccess((prev: any) => !prev);
-          resetForm();
-          showCreateModal(false);
+          query.invalidateQueries({ queryKey: ["products"] });
+          showEditModal(false)
         }}
         onError={(error) => {
           console.log("Error", error);
@@ -133,6 +150,20 @@ const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                         name="image"
                         accept="image/png, image/jpeg, image/jpg"
                       />
+                      <Field
+                        rootClassName="mb-[30px]"
+                        component={Fields.Input}
+                        name="price"
+                        type="number"
+                        placeholder={t("price")}
+                        size="large"
+                      />
+                    </div>
+                    <div>
+                      <Field rootClassName="mb-[30px]" component={Fields.Select} name="type" size="large">
+                        <option value="unripe">{t("unripe")}</option>
+                        <option value="halfReady">{t("halfReady")}</option>
+                      </Field>
                     </div>
                   </div>
                   <Button
@@ -151,4 +182,4 @@ const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
   );
 };
 
-export default Blog;
+export default Partner;

@@ -30,15 +30,9 @@ const Blog = ({ showEditModal, selectedCard }: any): JSX.Element => {
             required: true,
           },
           {
-            name: "titleEn",
+            name: "titleEng",
             type: "string",
-            value: get(selectedCard, "titleEn"),
-            required: true,
-          },
-          {
-            name: "titleKr",
-            type: "string",
-            value: get(selectedCard, "titleKr"),
+            value: get(selectedCard, "titleEng"),
             required: true,
           },
           {
@@ -54,26 +48,14 @@ const Blog = ({ showEditModal, selectedCard }: any): JSX.Element => {
             required: true,
           },
           {
-            name: "descriptionEn",
+            name: "descriptionEng",
             type: "string",
-            value: get(selectedCard, "descriptionEn"),
+            value: get(selectedCard, "descriptionEng"),
             required: true,
           },
           {
-            name: "descriptionKr",
-            type: "string",
-            value: get(selectedCard, "descriptionKr"),
+            name: "image",
             required: true,
-          },
-          {
-            name: "images",
-            required: true,
-          },
-          {
-            name: "images",
-          },
-          {
-            name: "images",
           },
         ]}
         onSuccess={(data, resetForm, query) => {
@@ -130,7 +112,7 @@ const Blog = ({ showEditModal, selectedCard }: any): JSX.Element => {
                   <Field
                     rootClassName="mb-[30px]"
                     component={Fields.Input}
-                    name="titleEn"
+                    name="titleEng"
                     type="text"
                     placeholder={t("titleEn")}
                     size="large"
@@ -138,52 +120,21 @@ const Blog = ({ showEditModal, selectedCard }: any): JSX.Element => {
                   <Field
                     rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
                     component={AntTextarea}
-                    name="descriptionEn"
+                    name="descriptionEng"
                     type="text"
                     placeholder={t("descriptionEn")}
                     rows={3}
                     size="large"
                   />
                 </TabPane>
-                <TabPane tab={t("Chinese")} key="zh">
-                  <Field
-                    rootClassName="mb-[30px]"
-                    component={Fields.Input}
-                    name="titleKr"
-                    type="text"
-                    placeholder={t("titleKr")}
-                    size="large"
-                  />
-                  <Field
-                    rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
-                    component={AntTextarea}
-                    name="descriptionKr"
-                    type="text"
-                    placeholder={t("descriptionKr")}
-                    rows={3}
-                    size="large"
-                  />
+                <TabPane tab={t("Info")} key="zh">
                   <div className="flex justify-center">
                     <div className="flex gap-[70px]">
-                      {/* <Field
-                        component={Fields.FileUpload}
-                        setFieldValue={setFieldValue}
-                        rootClassName="mb-[30px]"
-                        name="images"
-                        accept="image/png, image/jpeg, image/jpg"
-                      />
                       <Field
                         component={Fields.FileUpload}
                         setFieldValue={setFieldValue}
                         rootClassName="mb-[30px]"
-                        name="images"
-                        accept="image/png, image/jpeg, image/jpg"
-                      /> */}
-                      <Field
-                        component={Fields.FileUpload}
-                        setFieldValue={setFieldValue}
-                        rootClassName="mb-[30px]"
-                        name="images"
+                        name="image"
                         accept="image/png, image/jpeg, image/jpg"
                       />
                     </div>

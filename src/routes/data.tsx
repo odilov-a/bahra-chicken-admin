@@ -1,15 +1,10 @@
 import { lazy } from "react";
 const Default = lazy(() => import("pages/default"));
 const Blogs = lazy(() => import("pages/blogs"));
-const Categoryies = lazy(() => import("pages/category"));
-const Achievements = lazy(() => import("pages/achievements"));
-const Comments = lazy(() => import("pages/comments"));
-const Brands = lazy(() => import("pages/brands"));
+const Youtube = lazy(() => import("pages/youtube"));
+const Certificate = lazy(() => import("pages/certificate"));
+const Partner = lazy(() => import("pages/partner"));
 const Products = lazy(() => import("pages/products"));
-const Orders = lazy(() => import("pages/orders"));
-const Gallery = lazy(() => import("pages/gallery"));
-const Vacancy = lazy(() => import("pages/vacancies"));
-const Video = lazy(() => import("pages/videos"));
 const User = lazy(() => import("pages/admin"));
 const NotFound = lazy(() => import("pages/notFound"));
 const LocalizationPanel = lazy(() => import("pages/localizationPanel"));
@@ -44,10 +39,10 @@ const privateRoutes: IRoute[] = [
     element: <Blogs />,
   },
   {
-    path: "/categories",
+    path: "/youtubes",
     access: ["admin"],
-    title: "Kategoriyalar",
-    element: <Categoryies />,
+    title: "YouTube",
+    element: <Youtube />,
   },
   {
     path: "/products",
@@ -56,46 +51,16 @@ const privateRoutes: IRoute[] = [
     element: <Products />,
   },
   {
-    path: "/comments",
+    path: "/certificates",
     access: ["admin"],
-    title: "Komentariyalar",
-    element: <Comments />,
+    title: "Sertifikatlar",
+    element: <Certificate />,
   },
   {
-    path: "/orders",
+    path: "/partners",
     access: ["admin"],
-    title: "Buyurtmalar",
-    element: <Orders />,
-  },
-  {
-    path: "/achievements",
-    access: ["admin"],
-    title: "Yutuqlar",
-    element: <Achievements />,
-  },
-  {
-    path: "/brands",
-    access: ["admin"],
-    title: "Brendlar",
-    element: <Brands />,
-  },
-  {
-    path: "/galleries",
-    access: ["admin"],
-    title: "Galereyalar",
-    element: <Gallery />,
-  },
-  {
-    path: "/vacancies",
-    access: ["admin"],
-    title: "Vakansiyalar",
-    element: <Vacancy />,
-  },
-  {
-    path: "/video",
-    access: ["admin"],
-    title: "Videolar",
-    element: <Video />,
+    title: "Hamkorlar",
+    element: <Partner />,
   },
   {
     path: "/translations",

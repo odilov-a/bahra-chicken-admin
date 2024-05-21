@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Modal, notification } from "antd";
+import { Col, Row, Modal, notification } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
@@ -7,9 +7,8 @@ import Update from "./update";
 import Create from "./create";
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
 
-const Category = () => {
+const Partner = () => {
   const { get, queryClient, t } = useHooks();
-  const { Meta } = Card;
   const [editModal, showEditModal] = useState(false);
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
@@ -28,7 +27,7 @@ const Category = () => {
   };
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
-      title: t("Вы действительно хотите удалить category?"),
+      title: t("Вы действительно хотите удалить ceretifikat?"),
       okText: t("да"),
       okType: "danger",
       cancelText: t("нет"),
@@ -39,11 +38,11 @@ const Category = () => {
   const deleteAction = (id: string) => {
     if (id) {
       mutate(
-        { method: "delete", url: `/categories/${id}`, data: null },
+        { method: "delete", url: `/partners/${id}`, data: null },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({
-              queryKey: [`categories`],
+              queryKey: [`partners`],
             });
             notification["success"]({
               message: t("Успешно удалена"),
@@ -69,7 +68,7 @@ const Category = () => {
         onCancel={() => showCreateModal(false)}
         footer={null}
         centered
-        title={t("Create category")}
+        title={t("Create Partner")}
         width={500}
         destroyOnClose
       >
@@ -81,44 +80,33 @@ const Category = () => {
         onCancel={() => showEditModal(false)}
         footer={null}
         centered
-        title={t("Edit category")}
+        title={t("Edit Partner")}
         width={500}
         destroyOnClose
       >
         <Update {...{ showEditModal, selectedCard }} />
       </Modal>
       <div>
-        <Container.All name="categories" url="/categories">
+        <Container.All name="partners" url="/partners">
           {({ items }) => {
             return (
               <div>
                 <Button
-                  title={t("Create category")}
+                  title={t("Create Partner")}
                   icon={<CreateDoc />}
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
-                <div className="grid grid-cols-4 gap-4 mt-[30px]">
+                <Row
+                  className="h-[120px] mt-[15px]"
+                >
                   {items.map((card) => {
                     return (
                       <>
-                        <div>
-                          <Card
-                            hoverable
-                            style={{ width: 260, marginRight: 15 }}
-                            cover={
-                              <img alt="alt" className="h-48 w-96 object-cover" src={get(card, "images[0].medium")} />
-                            }
-                          >
-                            <Meta
-                              className="pb-[60px]"
-                              title={
-                                <div className="">
-                                  <p>{t("Category nomi")} - {(get(card, "categoryName", ""))}</p>
-                                </div>
-                              }
-                            />
-                            <div className="btnPanel">
+                        <Col className="flex items-baseline justify-center">
+                          <div className="mr-8 mb-4">
+                          <img className="object-cover rounded-[10px] w-[260px] h-[200px]" alt="" src={get(card, "image[0].medium")} />
+                          <div className="btnPanel2">
                               <div
                                 className="editBtn"
                                 onClick={() => onEdit(card)}
@@ -134,12 +122,12 @@ const Category = () => {
                                 <Delete />
                               </div>
                             </div>
-                          </Card>
-                        </div>
+                          </div>
+                        </Col>
                       </>
                     );
                   })}
-                </div>
+                </Row>
               </div>
             );
           }}
@@ -149,4 +137,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Partner;

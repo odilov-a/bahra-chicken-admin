@@ -4,7 +4,7 @@ import { Fields, Button } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
-const Brand = ({
+const YouTube = ({
   showCreateModal,
   setSuccess,
 }: any): JSX.Element => {
@@ -12,20 +12,18 @@ const Brand = ({
   return (
     <div>
       <Container.Form
-        url="/brands"
+        url="/youtubes"
         method="post"
-        name="brands"
-        configs={{
-          headers: { "Content-Type": "multipart/form-data" },
-        }}
+        name="youtubes"
         fields={[
           {
-            name: "images",
+            name: "link",
+            type: "string",
             required: true,
           },
         ]}
         onSuccess={(data, resetForm, query) => {
-          query.invalidateQueries({ queryKey: ["brands"] });
+          query.invalidateQueries({ queryKey: ["youtubes"] });
           setSuccess((prev: any) => !prev);
           resetForm();
           showCreateModal(false);
@@ -36,13 +34,14 @@ const Brand = ({
       >
         {({ isSubmitting, setFieldValue }) => {
           return (
-            <Spin spinning={isSubmitting} tip="Verifying">              
+            <Spin spinning={isSubmitting} tip="Verifying">
               <Field
-                component={Fields.FileUpload}
-                setFieldValue={setFieldValue}
-                rootClassName="mb-[40px]"
-                name="images"
-                accept="image/png, image/jpeg, image/jpg"
+                rootClassName="mb-[30px] w-full"
+                component={Fields.Input}
+                name="link"
+                type="text"
+                placeholder={t("link")}
+                size="large"
               />
               <Button
                 title={t("Saqlash")}
@@ -58,4 +57,4 @@ const Brand = ({
   );
 };
 
-export default Brand;
+export default YouTube;

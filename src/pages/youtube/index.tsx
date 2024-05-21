@@ -3,21 +3,32 @@ import { Card, Modal, notification } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
+import Update from "./update";
 import Create from "./create";
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
-import './style.scss'
 
-const Vacancy = () => {
+const YouTube = () => {
   const { get, queryClient, t } = useHooks();
   const { Meta } = Card;
-  const [createModal, showCreateModal] = useState({
-    open: false,
-    data: {}
+  const [editModal, showEditModal] = useState(false);
+  const [createModal, showCreateModal] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [successed, setSuccess] = useState<boolean>(false);
+  const [modal, setModal] = useState<{
+    isOpen: boolean;
+    data: null;
+  }>({
+    isOpen: false,
+    data: null,
   });
   const { mutate } = usePost();
+  const onEdit = (item: object) => {
+    showEditModal(true);
+    setSelectedCard(item);
+  };
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
-      title: t("Вы действительно хотите удалить vacancy?"),
+      title: t("Вы действительно хотите удалить YouTube?"),
       okText: t("да"),
       okType: "danger",
       cancelText: t("нет"),
@@ -28,11 +39,11 @@ const Vacancy = () => {
   const deleteAction = (id: string) => {
     if (id) {
       mutate(
-        { method: "delete", url: `/vacancies/${id}`, data: null },
+        { method: "delete", url: `/youtubes/${id}`, data: null },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({
-              queryKey: [`vacancies`],
+              queryKey: [`youtubes`],
             });
             notification["success"]({
               message: t("Успешно удалена"),
@@ -53,27 +64,39 @@ const Vacancy = () => {
   return (
     <div className="flex">
       <Modal
-        open={get(createModal, "open")}
-        onOk={() => showCreateModal({ open: true, data: {} })}
-        onCancel={() => showCreateModal({ open: false, data: {} })}
+        open={createModal}
+        onOk={() => showCreateModal(true)}
+        onCancel={() => showCreateModal(false)}
         footer={null}
         centered
-        // title={t("Create product")}
-        width={700}
+        title={t("Create link")}
+        width={500}
         destroyOnClose
       >
-        <Create {...{ showCreateModal, createModal }} />
+        <Create {...{ showCreateModal, setSuccess, successed }} />
+      </Modal>
+      <Modal
+        open={editModal}
+        onOk={() => showEditModal(true)}
+        onCancel={() => showEditModal(false)}
+        footer={null}
+        centered
+        title={t("Edit link")}
+        width={500}
+        destroyOnClose
+      >
+        <Update {...{ showEditModal, selectedCard }} />
       </Modal>
       <div>
-        <Container.All name="vacancies" url="/vacancies">
+        <Container.All name="youtubes" url="/youtubes">
           {({ items }) => {
             return (
               <div>
                 <Button
-                  title={t("Create vacancy")}
+                  title={t("Create link")}
                   icon={<CreateDoc />}
                   size="large"
-                  onClick={() => showCreateModal({ open: true, data: {} })}
+                  onClick={() => showCreateModal(true)}
                 />
                 <div className="grid grid-cols-4 gap-4 mt-[30px]">
                   {items.map((card) => {
@@ -82,39 +105,27 @@ const Vacancy = () => {
                         <div>
                           <Card
                             hoverable
-                            style={{ width: 260, marginRight: 15 }}
+                            style={{ width: 300, marginRight: 15 }}
                           >
                             <Meta
                               className="pb-[60px]"
                               title={
                                 <div className="">
-                                  <p>{t("title")} - {(get(card, "title", ""))}</p>
-                                </div>
-                              }
-                              description={
-                                <div className="">
-                                  <p>{t("salary")} - {(get(card, "salary", ""))}</p>
-                                  <p>{t("workingTime")} - {(get(card, "workingTime", ""))}</p>
-                                  <p>{t("adress")} - {(get(card, "adress", ""))}</p>
-                                  <p>{t("description")} - {(get(card, "description", ""))}</p>
+                                  <p>{t("link")} - {(get(card, "link", ""))}</p>
                                 </div>
                               }
                             />
                             <div className="btnPanel">
                               <div
                                 className="editBtn"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  showCreateModal({ open: true, data: card })
-                                }}
+                                onClick={() => onEdit(card)}
                               >
                                 <Edit />
                               </div>
                               <div
-                                onClick={(e) => {
-                                  e.stopPropagation()
+                                onClick={() =>
                                   onDeleteHandler(get(card, "_id", ""))
-                                }}
+                                }
                                 className="deleteBtn"
                               >
                                 <Delete />
@@ -135,4 +146,4 @@ const Vacancy = () => {
   );
 };
 
-export default Vacancy;
+export default YouTube;

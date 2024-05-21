@@ -4,26 +4,26 @@ import { Container } from "modules";
 import { Button, Spin } from "antd";
 import { useHooks } from "hooks";
 
-const Achievement = ({ showEditModal, selectedCard }: any): JSX.Element => {
+const Certificate = ({ showEditModal, selectedCard }: any): JSX.Element => {
   const { get, t } = useHooks();
   return (
     <div className="">
       <Container.Form
         className="w-full"
-        url={`/achievements/${get(selectedCard, "_id")}`}
+        url={`/certificates/${get(selectedCard, "_id")}`}
         method="put"
-        name="achievements"
+        name="certificates"
         configs={{
           headers: { 'Content-Type': 'multipart/form-data' },
         }}
         fields={[
           {
-            name: "images",
+            name: "image",
             required: true,
           },
         ]}
         onSuccess={(data, resetForm, query) => {
-          query.invalidateQueries({ queryKey: ["achievements"] });
+          query.invalidateQueries({ queryKey: ["certificates"] });
           showEditModal(false)
         }}
         onError={(error) => {
@@ -37,7 +37,7 @@ const Achievement = ({ showEditModal, selectedCard }: any): JSX.Element => {
                 component={Fields.FileUpload}
                 setFieldValue={setFieldValue}
                 className="mb-4"
-                name="images"
+                name="image"
                 accept="image/png, image/jpeg, image/jpg"
               />
               <Button
@@ -54,4 +54,4 @@ const Achievement = ({ showEditModal, selectedCard }: any): JSX.Element => {
   );
 };
 
-export default Achievement;
+export default Certificate;

@@ -107,19 +107,23 @@ const Blog = () => {
                             hoverable
                             style={{ width: 300, marginRight: 15 }}
                             cover={
-                              <img alt="alt" className="h-48 w-96 object-cover" src={get(card, "images[0].medium")} />
+                              <img alt="alt" className="h-48 w-96 object-cover" src={get(card, "image[0].medium")} />
                             }
                           >
                             <Meta
                               className="pb-[60px]"
                               title={
                                 <div className="">
-                                  <p>{t("Nomi")} - {(get(card, "title", ""))}</p>
+                                  <p>{t("Nomi uz")} - {(get(card, "titleUz", ""))}</p>
+                                  <p>{t("Nomi ru")} - {(get(card, "titleRu", ""))}</p>
+                                  <p>{t("Nomi eng")} - {(get(card, "titleEng", ""))}</p>
                                 </div>
                               }
                               description={
                                 <div className="scrollable-div">
-                                  <p>{t("Tavsifi")} - {(get(card, "description", ""))}</p>
+                                  <p>{t("Tavsifi uz")} - {(get(card, "descriptionUz", ""))}</p>
+                                  <p>{t("Tavsifi ru")} - {(get(card, "descriptionRu", ""))}</p>
+                                  <p>{t("Tavsifi eng")} - {(get(card, "descriptionEng", ""))}</p>
                                 </div>
                               }
                             />
