@@ -12,14 +12,14 @@ i18next
   .init({
     fallbackLng: storage.get("i18nextLng") || "uz",
     lng: storage.get("i18nextLng") || "uz",
-    supportedLngs: ["kr", "ru", "uz", "en"],
+    supportedLngs: ["ru", "uz", "en"],
     saveMissing: true,
     interpolation: {
-      escapeValue: false,
+      escapeValue: true,
     },
     backend: {
-      addPath: config.API_ROOT + "translations/{{lng}}",
-      loadPath: config.API_ROOT + "translations/{{lng}}",
+      addPath: config.API_ROOT + "/translations/{{lng}}",
+      loadPath: config.API_ROOT + "/translations/{{lng}}",
     },
   });
 

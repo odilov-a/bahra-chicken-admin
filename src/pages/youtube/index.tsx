@@ -105,7 +105,7 @@ const YouTube = () => {
                         <div>
                           <Card
                             hoverable
-                            style={{ width: 300, marginRight: 15 }}
+                            style={{ width: 400, marginRight: 15 }}
                           >
                             <Meta
                               className="pb-[60px]"

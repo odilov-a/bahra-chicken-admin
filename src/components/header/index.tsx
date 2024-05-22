@@ -56,7 +56,7 @@ const HeaderComponent = ({ collapsed, setCollapsed }: IProps) => {
             <img className="profile-dropdown__arrow" src={Arrow} alt="arrow" />
           </div>
           <div className="profile-dropdown__options">
-            <p className="profile-dropdown__item profile-dropdown__info">Admin</p>
+            <p className="profile-dropdown__item profile-dropdown__info">{t("Admin")}</p>
             <Link className="profile-dropdown__item profile-dropdown__link" to="/profile">{t("Profile")}</Link>
             <p className="profile-dropdown__item profile-dropdown__link" onClick={() => (
               logOut(),

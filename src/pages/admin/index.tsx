@@ -23,7 +23,7 @@ const User = () => {
   };
   const { data } = useGet({
     name: "users/update-user",
-    url: "users/update-user",
+    url: "users/get-me",
     onSuccess: (data) => {
     },
     onError: (error) => {
@@ -49,12 +49,13 @@ const User = () => {
         <div>
           <Card
             hoverable
-            style={{ width: 300, marginRight: 15 }}
+            style={{ width: 400, marginRight: 15 }}
           >
             <Meta
               className="pb-[60px]"
               title={
                 <div className="">
+                  <p>{t("ID")} - {(get(info, "_id", ""))}</p>
                   <p>{t("Login")} - {(get(info, "username", ""))}</p>
                 </div>
               }

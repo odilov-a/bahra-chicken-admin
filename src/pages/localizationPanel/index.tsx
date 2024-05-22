@@ -7,7 +7,7 @@ import { useDebounce, usePost } from "hooks";
 import { Header } from "./components";
 
 const Localization = () => {
-  const { query, get, t } = useHooks();
+  const { get, t } = useHooks();
   const { mutate } = usePost();
   const [inputValue, setInputValue] = useState<{
     value: string;
@@ -17,7 +17,7 @@ const Localization = () => {
       en: string;
       uz: string;
     } | null;
-    changedLangCode: "uz" | "en" | "ru" | "kr" | null;
+    changedLangCode: "uz" | "en" | "ru" | null;
   }>({
     data: null,
     value: "",
@@ -28,8 +28,8 @@ const Localization = () => {
   const inputValueDebouncedSearch = useDebounce(searchWord, 600);
   function handleTranslationInput(
     e: ChangeEvent<HTMLInputElement>,
-    data: { message: string; _id: string; en: string; uz: string, ru: string, kr: string },
-    langCode: "uz" | "en" | "kr" | "ru"
+    data: { message: string; _id: string; en: string; uz: string, ru: string },
+    langCode: "uz" | "en" | "ru"
   ) {
     setInputValue({
       value: e.target.value,
@@ -57,7 +57,7 @@ const Localization = () => {
       <Header {...{setSearchWord}}/>
       <h1>{t("Localization")}</h1>
       <Container.All
-        url={`translations/${inputValueDebouncedSearch && "search/" + inputValueDebouncedSearch}`}
+        url={`/translations/${inputValueDebouncedSearch && "search/" + inputValueDebouncedSearch}`}
         name='localization'
         
       >
@@ -92,24 +92,24 @@ const Localization = () => {
                       );
                     },
                   },
-                  {
-                    key: "kr",
-                    title: t("Xitoy alifbosi"),
-                    dataIndex: "kr",
-                    className: "class",
-                    render: (value, data) => {
-                      return (
-                        <div>
-                          <Input
-                            defaultValue={value}
-                            onChange={(e) => {
-                              handleTranslationInput(e, data, "kr");
-                            }}
-                          />
-                        </div>
-                      );
-                    },
-                  },
+                  // {
+                  //   key: "kr",
+                  //   title: t("Xitoy alifbosi"),
+                  //   dataIndex: "kr",
+                  //   className: "class",
+                  //   render: (value, data) => {
+                  //     return (
+                  //       <div>
+                  //         <Input
+                  //           defaultValue={value}
+                  //           onChange={(e) => {
+                  //             handleTranslationInput(e, data, "kr");
+                  //           }}
+                  //         />
+                  //       </div>
+                  //     );
+                  //   },
+                  // },
                   {
                     key: "en",
                     title: t("Ingliz tilida"),
