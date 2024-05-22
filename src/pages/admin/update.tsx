@@ -2,6 +2,7 @@ import { Fields } from "components";
 import { Field } from "formik";
 import { Container } from "modules";
 import { useHooks } from "hooks";
+import { Button } from "antd";
 
 const User = ({ showEditModal, selectedCard }: any): JSX.Element => {
   const { get, t } = useHooks();
@@ -36,7 +37,6 @@ const User = ({ showEditModal, selectedCard }: any): JSX.Element => {
         {({ isSubmitting, setFieldValue }) => {
           return (
             <div className="flex justify-between">
-              <div className="flex justify-between flex-col">
                 <Field
                   rootClassName="mb-[10px] w-[300px]"
                   component={Fields.Input}
@@ -55,7 +55,12 @@ const User = ({ showEditModal, selectedCard }: any): JSX.Element => {
                   label={t("password")}
                   size="large"
                 />
-              </div>
+              <Button
+                  className="w-full h-auto py-[10px] px-4 bg-[#2196F3] text-white font-bold hover:!text-white"
+                  htmlType="submit"
+                >
+                  {t("Saqlash")}
+                </Button>
             </div>
           );
         }}
