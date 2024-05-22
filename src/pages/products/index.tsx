@@ -105,13 +105,13 @@ const Product = () => {
                         <div>
                           <Card
                             hoverable
-                            style={{ width: 300, marginRight: 15 }}
+                            style={{ width: 350, marginRight: 15 }}
                             cover={
-                              <img alt="alt" className="h-48 w-96 object-cover" src={get(card, "image[0].medium")} />
+                              <img alt="alt" className="h-50 w-100 object-cover" src={get(card, "image[0].medium")} />
                             }
                           >
                             <Meta
-                              className="pb-[60px]"
+                              className="pb-[50px]"
                               title={
                                 <div className="">
                                   <p>{t("Nomi uz")} - {(get(card, "titleUz", ""))}</p>

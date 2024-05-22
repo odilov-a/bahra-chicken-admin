@@ -111,7 +111,7 @@ const YouTube = () => {
                               className="pb-[60px]"
                               title={
                                 <div className="">
-                                  <p>{t("link")} - {(get(card, "link", ""))}</p>
+                                  <p>{(get(card, "link", ""))}</p>
                                 </div>
                               }
                             />
