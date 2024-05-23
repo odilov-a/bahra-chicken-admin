@@ -1,12 +1,17 @@
 import { Fields, AntTextarea } from "components";
-import { Field } from "formik";
+import { Field, FieldProps } from "formik";
 import { Container } from "modules";
-import { Button, Spin, Tabs } from "antd";
+import { Button, Spin, Select, Tabs } from "antd";
 import { useHooks } from "hooks";
 
-const Partner = ({ showEditModal, selectedCard }: any): JSX.Element => {
+const Partner = ({ showEditModal, selectedCard, system }: any): JSX.Element => {
   const { get, t } = useHooks();
   const { TabPane } = Tabs;
+  const { Option } = Select;
+  const changePattern = (value: any, setFieldValue: any) => {
+    setFieldValue("type", value);
+    console.log("Pattern changed to:", value);
+  };
   return (
     <div>
       <Container.Form
@@ -68,7 +73,7 @@ const Partner = ({ showEditModal, selectedCard }: any): JSX.Element => {
           {
             name: "image",
             required: true,
-            value: get(selectedCard, "image1[0].small")
+            value: get(selectedCard, "image[0].small")
           },
         ]}
         onSuccess={(data, resetForm, query) => {
@@ -141,37 +146,47 @@ const Partner = ({ showEditModal, selectedCard }: any): JSX.Element => {
                   />
                 </TabPane>
                 <TabPane tab={t("Info")} key="zh">
-                  <div className="flex justify-center">
-                    <div className="flex gap-[70px]">
+                  <div className="">
                       <Field
                         component={Fields.FileUpload}
                         setFieldValue={setFieldValue}
-                        rootClassName="mb-[30px]"
+                        rootClassName="mb-[20px]"
                         name="image"
                         accept="image/png, image/jpeg, image/jpg"
                       />
                       <Field
-                        rootClassName="mb-[30px]"
+                        rootClassName="mb-[20px]"
                         component={Fields.Input}
                         name="price"
                         type="number"
                         placeholder={t("price")}
                         size="large"
                       />
-                    </div>
                     <div>
-                      <Field rootClassName="mb-[30px]" component={Fields.Select} name="type" size="large">
-                        <option value="unripe">{t("unripe")}</option>
-                        <option value="halfReady">{t("halfReady")}</option>
-                      </Field>
+                    <Field name="type">
+                      {({ field, form }: FieldProps) => (
+                        <Select
+                          className="w-full mb-[20px]"
+                          defaultValue={get(system, "unripe")}
+                          size={"large"}
+                          onChange={(value: any) => {
+                            form.setFieldValue(field.name, value);
+                            changePattern(value, form.setFieldValue);
+                          }}
+                        >
+                          <Option value={"unripe"}>{t("xom")}</Option>
+                          <Option value={"halfReady"}>{t("yarim tayyor")}</Option>
+                        </Select>
+                      )}
+                    </Field>
                     </div>
                   </div>
                   <Button
-                    title={t("Saqlash")}
-                    className="w-full mt-[20px]"
+                    className="w-full h-auto py-[10px] px-4 bg-[#2196F3] text-white font-bold hover:!text-white"
                     htmlType="submit"
-                    size="large"
-                  />
+                  >
+                    {t("Saqlash")}
+                  </Button>
                 </TabPane>
               </Tabs>
             </Spin>

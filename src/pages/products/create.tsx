@@ -139,24 +139,22 @@ const Product = ({ showCreateModal, setSuccess, system }: any): JSX.Element => {
                   />
                 </TabPane>
                 <TabPane tab={t("Info")} key="zh">
-                  <div className="flex justify-center">
-                    <div className="flex gap-[70px]">
+                  <div className="">
                       <Field
                         component={Fields.FileUpload}
                         setFieldValue={setFieldValue}
-                        rootClassName="mb-[30px]"
+                        rootClassName="mb-[20px]"
                         name="image"
                         accept="image/png, image/jpeg, image/jpg"
                       />
                       <Field
-                        rootClassName="mb-[30px]"
+                        rootClassName="mb-[20px]"
                         component={Fields.Input}
                         name="price"
                         type="number"
                         placeholder={t("price")}
                         size="large"
                       />
-                    </div>
                     <div>
                     <Field name="type">
                       {({ field, form }: FieldProps) => (
@@ -169,8 +167,8 @@ const Product = ({ showCreateModal, setSuccess, system }: any): JSX.Element => {
                             changePattern(value, form.setFieldValue);
                           }}
                         >
-                          <Option value={"unripe"}>{t("unripe")}</Option>
-                          <Option value={"halfReady"}>{t("halfReady")}</Option>
+                          <Option value={"unripe"}>{t("xom")}</Option>
+                          <Option value={"halfReady"}>{t("yarim tayyor")}</Option>
                         </Select>
                       )}
                     </Field>

@@ -36,23 +36,21 @@ const User = ({ showEditModal, selectedCard }: any): JSX.Element => {
       >
         {({ isSubmitting, setFieldValue }) => {
           return (
-            <div className="flex justify-between">
+            <div className="">
                 <Field
-                  rootClassName="mb-[10px] w-[300px]"
+                  rootClassName="mb-[20px] w-full"
                   component={Fields.Input}
                   name="username"
                   type="text"
                   placeholder={t("username")}
-                  label={t("username")}
                   size="large"
                 />
                 <Field
-                  rootClassName="mb-[10px] w-[300px]"
+                  rootClassName="mb-[20px] w-full"
                   component={Fields.Input}
                   name="password"
                   type="text"
                   placeholder={t("password")}
-                  label={t("password")}
                   size="large"
                 />
               <Button
