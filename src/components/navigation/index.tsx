@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-import { FormOutlined, AppstoreAddOutlined, StarOutlined } from "@ant-design/icons";
+import { FormOutlined, AppstoreAddOutlined, StarOutlined, DiffOutlined, YoutubeOutlined, FileImageOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
   Translation,
@@ -55,7 +55,7 @@ const Navigation: React.FC = () => {
     {
       key: "certificates",
       label: "Sertifikatlar",
-      icon: <AppstoreAddOutlined />,
+      icon: <DiffOutlined />,
       route: "/certificates",
     },
     {
@@ -66,14 +66,14 @@ const Navigation: React.FC = () => {
     },
     {
       key: "galleries",
-      label: "Gallereya",
-      icon: <StarOutlined />,
+      label: "Galareya",
+      icon: <FileImageOutlined />,
       route: "/galleries",
     },
     {
       key: "youtubes",
       label: "YouTube",
-      icon: <StarOutlined />,
+      icon: <YoutubeOutlined />,
       route: "/youtubes",
     },
     {
