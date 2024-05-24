@@ -125,9 +125,9 @@ const Product = () => {
                               }
                               description={
                                 <div className="scrollable-div">
-                                  <p><strong>{t("Tavsifi uz")}</strong> - {(get(card, "descriptionUz", ""))}</p>
-                                  <p><strong>{t("Tavsifi ru")}</strong> - {(get(card, "descriptionRu", ""))}</p>
-                                  <p><strong>{t("Tavsifi eng")}</strong> - {(get(card, "descriptionEng", ""))}</p>
+                                  <p><strong>{t("Tavsifi uz")}</strong><br/> - {(get(card, "descriptionUz", ""))}</p>
+                                  <p><strong>{t("Tavsifi ru")}</strong><br/> - {(get(card, "descriptionRu", ""))}</p>
+                                  <p><strong>{t("Tavsifi eng")}</strong><br/> - {(get(card, "descriptionEng", ""))}</p>
                                 </div>
                               }
                             />
