@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Modal, notification } from "antd";
+import { Col, Row, Modal, notification } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
@@ -7,9 +7,8 @@ import Update from "./update";
 import Create from "./create";
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
 
-const Product = () => {
+const Gallery = () => {
   const { get, queryClient, t } = useHooks();
-  const { Meta } = Card;
   const [editModal, showEditModal] = useState(false);
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
@@ -28,7 +27,7 @@ const Product = () => {
   };
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
-      title: t("Вы действительно хотите удалить product?"),
+      title: t("Вы действительно хотите удалить Gallery?"),
       okText: t("да"),
       okType: "danger",
       cancelText: t("нет"),
@@ -39,11 +38,11 @@ const Product = () => {
   const deleteAction = (id: string) => {
     if (id) {
       mutate(
-        { method: "delete", url: `/products/${id}`, data: null },
+        { method: "delete", url: `/galleries/${id}`, data: null },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({
-              queryKey: [`products`],
+              queryKey: [`galleries`],
             });
             notification["success"]({
               message: t("Успешно удалена"),
@@ -69,8 +68,8 @@ const Product = () => {
         onCancel={() => showCreateModal(false)}
         footer={null}
         centered
-        title={t("Create product")}
-        width={900}
+        title={t("Create Gallery")}
+        width={500}
         destroyOnClose
       >
         <Create {...{ showCreateModal, setSuccess, successed }} />
@@ -81,57 +80,33 @@ const Product = () => {
         onCancel={() => showEditModal(false)}
         footer={null}
         centered
-        title={t("Edit product")}
-        width={900}
+        title={t("Edit Gallery")}
+        width={500}
         destroyOnClose
       >
         <Update {...{ showEditModal, selectedCard }} />
       </Modal>
       <div>
-        <Container.All name="products" url="/products">
+        <Container.All name="galleries" url="/galleries">
           {({ items }) => {
             return (
               <div>
                 <Button
-                  title={t("Create product")}
+                  title={t("Create Gallery")}
                   icon={<CreateDoc />}
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
-                <div className="grid grid-cols-4 gap-4 mt-[30px]">
+                <Row
+                  className="h-[120px] mt-[15px]"
+                >
                   {items.map((card) => {
                     return (
                       <>
-                        <div>
-                          <Card
-                            hoverable
-                            style={{ width: 300, marginRight: 20 }}
-                            cover={
-                              <img alt="alt" className="h-50 w-100 object-cover" src={get(card, "image[0].image[0].medium")} />
-                            }
-                          >
-                            <Meta
-                              className="pb-[50px]"
-                              title={
-                                <div className="">
-                                  <p>{t("Nomi uz")} - {(get(card, "titleUz", ""))}</p>
-                                  <p>{t("Nomi ru")} - {(get(card, "titleRu", ""))}</p>
-                                  <p>{t("Nomi eng")} - {(get(card, "titleEng", ""))}</p>
-                                  <p>{t("Narxi")} - {(get(card, "price", ""))}</p>
-                                  <p>{t("Turi")} - {(get(card, "typeUz", ""))}</p>
-                                  <p>{t("Turi")} - {(get(card, "typeRu", ""))}</p>
-                                  <p>{t("Turi")} - {(get(card, "typeEng", ""))}</p>
-                                </div>
-                              }
-                              description={
-                                <div className="scrollable-div">
-                                  <p>{t("Tavsifi uz")} - {(get(card, "descriptionUz", ""))}</p>
-                                  <p>{t("Tavsifi ru")} - {(get(card, "descriptionRu", ""))}</p>
-                                  <p>{t("Tavsifi eng")} - {(get(card, "descriptionEng", ""))}</p>
-                                </div>
-                              }
-                            />
-                            <div className="btnPanel">
+                        <Col className="flex items-baseline justify-center">
+                          <div className="mr-8 mb-4">
+                          <img className="object-cover rounded-[10px] w-[260px] h-[200px]" alt="" src={get(card, "image[0].medium")} />
+                          <div className="btnPanel2">
                               <div
                                 className="editBtn"
                                 onClick={() => onEdit(card)}
@@ -147,12 +122,12 @@ const Product = () => {
                                 <Delete />
                               </div>
                             </div>
-                          </Card>
-                        </div>
+                          </div>
+                        </Col>
                       </>
                     );
                   })}
-                </div>
+                </Row>
               </div>
             );
           }}
@@ -162,4 +137,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Gallery;

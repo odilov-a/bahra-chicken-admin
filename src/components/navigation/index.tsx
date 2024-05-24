@@ -65,6 +65,12 @@ const Navigation: React.FC = () => {
       route: "/partners",
     },
     {
+      key: "galleries",
+      label: "Gallereya",
+      icon: <StarOutlined />,
+      route: "/galleries",
+    },
+    {
       key: "youtubes",
       label: "YouTube",
       icon: <StarOutlined />,

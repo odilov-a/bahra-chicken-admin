@@ -5,6 +5,7 @@ const Youtube = lazy(() => import("pages/youtube"));
 const Certificate = lazy(() => import("pages/certificate"));
 const Partner = lazy(() => import("pages/partner"));
 const Products = lazy(() => import("pages/products"));
+const Gallery = lazy(() => import("pages/gallery"));
 const User = lazy(() => import("pages/admin"));
 const NotFound = lazy(() => import("pages/notFound"));
 const LocalizationPanel = lazy(() => import("pages/localizationPanel"));
@@ -43,6 +44,12 @@ const privateRoutes: IRoute[] = [
     access: ["admin"],
     title: "YouTube",
     element: <Youtube />,
+  },
+  {
+    path: "/galleries",
+    access: ["admin"],
+    title: "Gallereya",
+    element: <Gallery />,
   },
   {
     path: "/products",
