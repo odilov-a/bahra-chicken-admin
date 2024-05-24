@@ -118,9 +118,13 @@ const Product = () => {
                                   <p>{t("Nomi ru")} - {(get(card, "titleRu", ""))}</p>
                                   <p>{t("Nomi eng")} - {(get(card, "titleEng", ""))}</p>
                                   <p>{t("Narxi")} - {(get(card, "price", ""))}</p>
+<<<<<<< HEAD
                                   <p>{t("Turi")} - {(get(card, "typeUz", ""))}</p>
                                   <p>{t("Turi")} - {(get(card, "typeRu", ""))}</p>
                                   <p>{t("Turi")} - {(get(card, "typeEng", ""))}</p>
+=======
+                                  <p>{t("Turi")} - {(get(card, "type", ""))}</p>
+>>>>>>> 48f8c64763df0d62a74eba800342ea4d6fae0cd4
                                 </div>
                               }
                               description={

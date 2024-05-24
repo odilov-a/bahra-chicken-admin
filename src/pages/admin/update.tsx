@@ -49,7 +49,7 @@ const User = ({ showEditModal, selectedCard }: any): JSX.Element => {
                   rootClassName="mb-[20px] w-full"
                   component={Fields.Input}
                   name="password"
-                  type="text"
+                  type="password"
                   placeholder={t("password")}
                   size="large"
                 />
