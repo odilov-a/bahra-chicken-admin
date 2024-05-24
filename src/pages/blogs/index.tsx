@@ -105,13 +105,13 @@ const Blog = () => {
                         <div>
                           <Card
                             hoverable
-                            style={{ width: 350, marginRight: 15 }}
+                            style={{ width: 300, marginRight: 20 }}
                             cover={
                               <img alt="alt" className="h-50 w-100 object-cover" src={get(card, "image[0].medium")} />
                             }
                           >
                             <Meta
-                              className="pb-[60px]"
+                              className="pb-[50px]"
                               title={
                                 <div className="">
                                   <p>{t("Nomi uz")} - {(get(card, "titleUz", ""))}</p>
@@ -121,9 +121,9 @@ const Blog = () => {
                               }
                               description={
                                 <div className="scrollable-div">
-                                  <p>{t("Tavsifi uz")} - {(get(card, "descriptionUz", ""))}</p>
-                                  <p>{t("Tavsifi ru")} - {(get(card, "descriptionRu", ""))}</p>
-                                  <p>{t("Tavsifi eng")} - {(get(card, "descriptionEng", ""))}</p>
+                                  <p><strong>{t("Tavsifi uz")}</strong> - {(get(card, "descriptionUz", ""))}</p>
+                                  <p><strong>{t("Tavsifi ru")}</strong> - {(get(card, "descriptionRu", ""))}</p>
+                                  <p><strong>{t("Tavsifi eng")}</strong> - {(get(card, "descriptionEng", ""))}</p>
                                 </div>
                               }
                             />
