@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Modal, notification } from "antd";
+import { Card, Modal, notification, Pagination } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
@@ -12,6 +12,7 @@ const YouTube = () => {
   const [editModal, showEditModal] = useState(false);
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [page, setPage] = useState(1);
   const [successed, setSuccess] = useState<boolean>(false);
   const { mutate } = usePost();
   
@@ -78,8 +79,8 @@ const YouTube = () => {
         <Method {...{ showEditModal, selectedCard, setSuccess, successed }} />
       </Modal>
       <div>
-        <Container.All name="youtubes" url="/youtubes">
-          {({ items }) => {
+        <Container.All name="youtubes" url="/youtubes" params={{page, limit:8}}>
+          {({ items, isLoading, meta }) => {
             return (
               <div>
                 <Button
@@ -88,6 +89,23 @@ const YouTube = () => {
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
+                {meta && meta.perPage && (
+                <div className="mt-[20px] flex justify-center">
+                  <Pagination
+                    current={meta.currentPage}
+                    pageSize={meta.perPage}
+                    total={(meta.totalCount)}
+                    onChange={(page: any) => {
+                      setPage(page)
+                      window.scrollTo({
+                        behavior: "smooth",
+                        top: 0,
+                        left: 0
+                      })
+                    }}
+                  />
+                </div>
+              )}
                 <div className="grid grid-cols-4 gap-4 mt-8">
                   {items.map((card) => (
                     <div key={get(card, "_id", "")}>
