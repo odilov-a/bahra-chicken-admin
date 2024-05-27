@@ -12,7 +12,7 @@ i18next
   .init({
     fallbackLng: storage.get("i18nextLng") || "uz",
     lng: storage.get("i18nextLng") || "uz",
-    supportedLngs: ["ru", "uz", "en"],
+    supportedLngs: ["ru", "uz", "eng"],
     saveMissing: true,
     interpolation: {
       escapeValue: true,

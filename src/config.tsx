@@ -20,8 +20,7 @@ const config: IConfig = {
   DEFAULT_LANGUAGE: "uz",
   API_LANGUAGES: [
     { id: 1, code: "uz", title: "O'zbekcha", short: "O'Z" },
-    // { id: 2, code: "kr", title: "中国", short: "中国" },
-    { id: 4, code: "en", title: "English", short: "EN" },
+    { id: 4, code: "eng", title: "English", short: "ENG" },
     { id: 3, code: "ru", title: "Русский", short: "РУ" },
   ],
 };
