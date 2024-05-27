@@ -4,8 +4,8 @@ import { Fields, Button, AntTextarea } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
-const Product = ({ showCreateModal, setSuccess, system }: any): JSX.Element => {
-  const { t, get } = useHooks();
+const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
+  const { t } = useHooks();
   const { TabPane } = Tabs;
   const { Option } = Select;
   const changePattern = (value: any, setFieldValue: any) => {
@@ -102,7 +102,6 @@ const Product = ({ showCreateModal, setSuccess, system }: any): JSX.Element => {
                     {({ field, form }: FieldProps) => (
                       <Select
                         rootClassName="mb-[20px] w-full"
-                        defaultValue="unripeUz"
                         size={"large"}
                         onChange={(value: any) => {
                           form.setFieldValue(field.name, value);
@@ -139,7 +138,6 @@ const Product = ({ showCreateModal, setSuccess, system }: any): JSX.Element => {
                     {({ field, form }: FieldProps) => (
                       <Select
                         rootClassName="mb-[20px] w-full"
-                        defaultValue="unripeRu"
                         size={"large"}
                         onChange={(value: any) => {
                           form.setFieldValue(field.name, value);
@@ -176,7 +174,6 @@ const Product = ({ showCreateModal, setSuccess, system }: any): JSX.Element => {
                     {({ field, form }: FieldProps) => (
                       <Select
                         rootClassName="mb-[20px] w-full"
-                        defaultValue="unripeEng"
                         size={"large"}
                         onChange={(value: any) => {
                           form.setFieldValue(field.name, value);

@@ -3,8 +3,7 @@ import { Card, Modal, notification } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
-import Update from "./update";
-import Create from "./create";
+import Method from "./method";
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
 
 const YouTube = () => {
@@ -14,24 +13,19 @@ const YouTube = () => {
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [successed, setSuccess] = useState<boolean>(false);
-  const [modal, setModal] = useState<{
-    isOpen: boolean;
-    data: null;
-  }>({
-    isOpen: false,
-    data: null,
-  });
   const { mutate } = usePost();
+  
   const onEdit = (item: object) => {
     showEditModal(true);
     setSelectedCard(item);
   };
+
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
-      title: t("Вы действительно хотите удалить YouTube?"),
-      okText: t("да"),
+      title: t("Are you sure you want to delete this YouTube link?"),
+      okText: t("Yes"),
       okType: "danger",
-      cancelText: t("нет"),
+      cancelText: t("No"),
       onOk: () => deleteAction(id),
     });
   };
@@ -42,17 +36,15 @@ const YouTube = () => {
         { method: "delete", url: `/youtubes/${id}`, data: null },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({
-              queryKey: [`youtubes`],
-            });
-            notification["success"]({
-              message: t("Успешно удалена"),
+            queryClient.invalidateQueries({ queryKey: ["youtubes"] });
+            notification.success({
+              message: t("Successfully deleted"),
               duration: 2,
             });
           },
           onError: (error: any) => {
-            notification["error"]({
-              message: get(error, "errorMessage", t("Произошло ошибка!")),
+            notification.error({
+              message: get(error, "errorMessage", t("An error occurred!")),
               duration: 2,
             });
           },
@@ -65,7 +57,6 @@ const YouTube = () => {
     <div className="flex">
       <Modal
         open={createModal}
-        onOk={() => showCreateModal(true)}
         onCancel={() => showCreateModal(false)}
         footer={null}
         centered
@@ -73,11 +64,10 @@ const YouTube = () => {
         width={500}
         destroyOnClose
       >
-        <Create {...{ showCreateModal, setSuccess, successed }} />
+        <Method {...{ showCreateModal, setSuccess, successed }} />
       </Modal>
       <Modal
         open={editModal}
-        onOk={() => showEditModal(true)}
         onCancel={() => showEditModal(false)}
         footer={null}
         centered
@@ -85,7 +75,7 @@ const YouTube = () => {
         width={500}
         destroyOnClose
       >
-        <Update {...{ showEditModal, selectedCard }} />
+        <Method {...{ showEditModal, selectedCard, setSuccess, successed }} />
       </Modal>
       <div>
         <Container.All name="youtubes" url="/youtubes">
@@ -98,44 +88,37 @@ const YouTube = () => {
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
-                <div className="grid grid-cols-4 gap-4 mt-[30px]">
-                  {items.map((card) => {
-                    return (
-                      <>
-                        <div>
-                          <Card
-                            hoverable
-                            style={{ width: 400, marginRight: 15 }}
-                          >
-                            <Meta
-                              className="pb-[60px]"
-                              title={
-                                <div className="">
-                                  <p><strong>{(get(card, "link", ""))}</strong></p>
-                                </div>
-                              }
-                            />
-                            <div className="btnPanel">
-                              <div
-                                className="editBtn"
-                                onClick={() => onEdit(card)}
-                              >
-                                <Edit />
-                              </div>
-                              <div
-                                onClick={() =>
-                                  onDeleteHandler(get(card, "_id", ""))
-                                }
-                                className="deleteBtn"
-                              >
-                                <Delete />
-                              </div>
+                <div className="grid grid-cols-4 gap-4 mt-8">
+                  {items.map((card) => (
+                    <div key={get(card, "_id", "")}>
+                      <Card hoverable style={{ width: 300, marginRight: 15 }}>
+                        <Meta
+                          className="pb-16"
+                          title={
+                            <div>
+                              <p>{get(card, "link", "")}</p>
                             </div>
-                          </Card>
+                          }
+                        />
+                        <div className="btnPanel">
+                          <div
+                            className="editBtn"
+                            onClick={() => onEdit(card)}
+                          >
+                            <Edit />
+                          </div>
+                          <div
+                            className="deleteBtn"
+                            onClick={() =>
+                              onDeleteHandler(get(card, "_id", ""))
+                            }
+                          >
+                            <Delete />
+                          </div>
                         </div>
-                      </>
-                    );
-                  })}
+                      </Card>
+                    </div>
+                  ))}
                 </div>
               </div>
             );
