@@ -108,10 +108,8 @@ const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                           changePattern(value, form.setFieldValue);
                         }}
                       >
-                        <Option value={"unripeUz"}>{t("xom")}</Option>
-                        <Option value={"halfReadyUz"}>
-                          {t("yarim tayyor")}
-                        </Option>
+                        <Option value={"Xom tovuq"}>Xom tovuq</Option>
+                        <Option value={"Yarim tayyor ovqat"}>Yarim tayyor ovqat</Option>
                       </Select>
                     )}
                   </Field>
@@ -144,10 +142,8 @@ const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                           changePattern(value, form.setFieldValue);
                         }}
                       >
-                        <Option value={"unripeRu"}>{t("xom")}</Option>
-                        <Option value={"halfReadyRu"}>
-                          {t("yarim tayyor")}
-                        </Option>
+                        <Option value={"Сырые куриные"}>Сырые куриные</Option>
+                        <Option value={"Полуфабрикаты"}>Полуфабрикаты</Option>
                       </Select>
                     )}
                   </Field>
@@ -180,10 +176,8 @@ const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                           changePattern(value, form.setFieldValue);
                         }}
                       >
-                        <Option value={"unripeEng"}>{t("xom")}</Option>
-                        <Option value={"halfReadyEng"}>
-                          {t("yarim tayyor")}
-                        </Option>
+                        <Option value={"Raw Chicken"}>Raw Chicken</Option>
+                        <Option value={"Half-ready food"}>Half-ready food</Option>
                       </Select>
                     )}
                   </Field>
