@@ -114,16 +114,12 @@ const Blog = () => {
                               className="pb-[50px]"
                               title={
                                 <div className="">
-                                  <p>{t("Nomi uz")} - {(get(card, "titleUz", ""))}</p>
-                                  <p>{t("Nomi ru")} - {(get(card, "titleRu", ""))}</p>
-                                  <p>{t("Nomi eng")} - {(get(card, "titleEng", ""))}</p>
+                                  <p>{t("Nomi")} - {(get(card, "title", ""))}</p>
                                 </div>
                               }
                               description={
                                 <div className="scrollable-div">
-                                  <p><strong>{t("Tavsifi uz")}</strong><br/> - {(get(card, "descriptionUz", ""))}</p>
-                                  <p><strong>{t("Tavsifi ru")}</strong><br/> - {(get(card, "descriptionRu", ""))}</p>
-                                  <p><strong>{t("Tavsifi eng")}</strong><br/> - {(get(card, "descriptionEng", ""))}</p>
+                                  <p><strong>{t("Tavsifi")}</strong><br/> - {(get(card, "description", ""))}</p>
                                 </div>
                               }
                             />

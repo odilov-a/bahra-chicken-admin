@@ -114,20 +114,14 @@ const Product = () => {
                               className="pb-[50px]"
                               title={
                                 <div className="">
-                                  <p>{t("Nomi uz")} - {(get(card, "titleUz", ""))}</p>
-                                  <p>{t("Nomi ru")} - {(get(card, "titleRu", ""))}</p>
-                                  <p>{t("Nomi eng")} - {(get(card, "titleEng", ""))}</p>
+                                  <p>{t("Nomi")} - {(get(card, "title", ""))}</p>
                                   <p>{t("Narxi")} - {(get(card, "price", ""))}</p>
-                                  <p>{t("Turi")} - {(get(card, "typeUz", ""))}</p>
-                                  <p>{t("Turi")} - {(get(card, "typeRu", ""))}</p>
-                                  <p>{t("Turi")} - {(get(card, "typeEng", ""))}</p>
+                                  <p>{t("Turi")} - {(get(card, "type", ""))}</p>
                                 </div>
                               }
                               description={
                                 <div className="scrollable-div">
-                                  <p><strong>{t("Tavsifi uz")}</strong><br/> - {(get(card, "descriptionUz", ""))}</p>
-                                  <p><strong>{t("Tavsifi ru")}</strong><br/> - {(get(card, "descriptionRu", ""))}</p>
-                                  <p><strong>{t("Tavsifi eng")}</strong><br/> - {(get(card, "descriptionEng", ""))}</p>
+                                  <p><strong>{t("Tavsifi")}</strong><br/> - {(get(card, "description", ""))}</p>
                                 </div>
                               }
                             />
