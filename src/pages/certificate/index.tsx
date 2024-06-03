@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Col, Row, Modal, notification } from "antd";
+import { Col, Row, Modal, notification, Pagination } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
@@ -12,6 +12,7 @@ const Certificate = () => {
   const [editModal, showEditModal] = useState(false);
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [page, setPage] = useState(1);
   const [successed, setSuccess] = useState<boolean>(false);
   const [modal, setModal] = useState<{
     isOpen: boolean;
@@ -87,16 +88,40 @@ const Certificate = () => {
         <Update {...{ showEditModal, selectedCard }} />
       </Modal>
       <div>
-        <Container.All name="certificates" url="/certificates">
-          {({ items }) => {
+        <Container.All name="certificates" url="/certificates"
+          params={{
+            page,
+            limit: 8,
+          }}
+        >
+          {({ items, isLoading, meta }) => {
             return (
               <div>
+                <div className="flex justify-between">
                 <Button
                   title={t("Create certificate")}
                   icon={<CreateDoc />}
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
+                {meta && meta.perPage && (
+                <div className="mt-[20px] flex justify-center">
+                  <Pagination
+                    current={meta.currentPage}
+                    pageSize={meta.perPage}
+                    total={(meta.totalCount)}
+                    onChange={(page: any) => {
+                      setPage(page)
+                      window.scrollTo({
+                        behavior: "smooth",
+                        top: 0,
+                        left: 0
+                      })
+                    }}
+                  />
+                </div>
+              )}
+              </div>
                 <Row
                   className="h-[120px] mt-[15px]"
                 >

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Modal, notification } from "antd";
+import { Card, Modal, notification, Pagination } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
@@ -13,6 +13,7 @@ const Blog = () => {
   const [editModal, showEditModal] = useState(false);
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [page, setPage] = useState(1);
   const [successed, setSuccess] = useState<boolean>(false);
   const [modal, setModal] = useState<{
     isOpen: boolean;
@@ -88,16 +89,41 @@ const Blog = () => {
         <Update {...{ showEditModal, selectedCard }} />
       </Modal>
       <div>
-        <Container.All name="blogs" url="/blogs">
-          {({ items }) => {
+        <Container.All name="blogs" url="/blogs" 
+        params={{
+          page,
+          limit: 8,
+        }}
+        >
+          {({ items, isLoading, meta }) => {
             return (
               <div>
+                <div className="flex justify-between">
                 <Button
                   title={t("Create blog")}
                   icon={<CreateDoc />}
+                  // isLoading={successed}
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
+                {meta && meta.perPage && (
+                <div className="mt-[20px] flex justify-center">
+                  <Pagination
+                    current={meta.currentPage}
+                    pageSize={meta.perPage}
+                    total={(meta.totalCount)}
+                    onChange={(page: any) => {
+                      setPage(page)
+                      window.scrollTo({
+                        behavior: "smooth",
+                        top: 0,
+                        left: 0
+                      })
+                    }}
+                  />
+                </div>
+              )}
+                </div>
                 <div className="grid grid-cols-4 gap-4 mt-[30px]">
                   {items.map((card) => {
                     return (
