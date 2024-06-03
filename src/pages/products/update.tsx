@@ -85,12 +85,15 @@ const Partner = ({ showEditModal, selectedCard, system }: any): JSX.Element => {
           {
             name: "image",
             required: true,
+            value: get(selectedCard, "image[0].image[0].small")
           },
           {
             name: "image02",
+            value: get(selectedCard, "image[0].image[0].small")
           },
           {
             name: "image03",
+            value: get(selectedCard, "image[0].image[0].small")
           },
         ]}
         onSuccess={(data, resetForm, query) => {

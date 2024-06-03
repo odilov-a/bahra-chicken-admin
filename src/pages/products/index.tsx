@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Modal, notification, Pagination } from "antd";
+import { Card, Modal, notification } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
@@ -13,7 +13,6 @@ const Product = () => {
   const [editModal, showEditModal] = useState(false);
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [page, setPage] = useState(1);
   const [successed, setSuccess] = useState<boolean>(false);
   const [modal, setModal] = useState<{
     isOpen: boolean;
@@ -89,8 +88,8 @@ const Product = () => {
         <Update {...{ showEditModal, selectedCard }} />
       </Modal>
       <div>
-        <Container.All name="products" url="/products" params={{page, limit:8}}>
-          {({ items, isLoading, meta }) => {
+        <Container.All name="products" url="/products">
+          {({ items }) => {
             return (
               <div>
                 <Button
@@ -99,23 +98,6 @@ const Product = () => {
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
-                {meta && meta.perPage && (
-                <div className="mt-[20px] flex justify-center">
-                  <Pagination
-                    current={meta.currentPage}
-                    pageSize={meta.perPage}
-                    total={(meta.totalCount)}
-                    onChange={(page: any) => {
-                      setPage(page)
-                      window.scrollTo({
-                        behavior: "smooth",
-                        top: 0,
-                        left: 0
-                      })
-                    }}
-                  />
-                </div>
-              )}
                 <div className="grid grid-cols-4 gap-4 mt-[30px]">
                   {items.map((card) => {
                     return (
@@ -125,7 +107,7 @@ const Product = () => {
                             hoverable
                             style={{ width: 300, marginRight: 20 }}
                             cover={
-                              <img alt="alt" className="h-50 w-100 object-cover" src={get(card, "image[0].image[0].medium")} />
+                              <img alt="alt" className="object-cover h-48 w-96" src={get(card, "image[0].image[0].medium")} />
                             }
                           >
                             <Meta
@@ -139,7 +121,7 @@ const Product = () => {
                               }
                               description={
                                 <div className="scrollable-div">
-                                  <p><strong>{t("Tavsifi")}</strong><br/> - {(get(card, "description", ""))}</p>
+                                  <p>{t("Tavsifi")} - {(get(card, "description", ""))}</p>
                                 </div>
                               }
                             />

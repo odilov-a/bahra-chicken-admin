@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Card, Modal, notification, Pagination } from "antd";
+import { Card, Modal, notification } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
-import Method from "./method";
+import Update from "./update";
+import Create from "./create";
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
 
 const YouTube = () => {
@@ -12,21 +13,25 @@ const YouTube = () => {
   const [editModal, showEditModal] = useState(false);
   const [createModal, showCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [page, setPage] = useState(1);
   const [successed, setSuccess] = useState<boolean>(false);
+  const [modal, setModal] = useState<{
+    isOpen: boolean;
+    data: null;
+  }>({
+    isOpen: false,
+    data: null,
+  });
   const { mutate } = usePost();
-  
   const onEdit = (item: object) => {
     showEditModal(true);
     setSelectedCard(item);
   };
-
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
-      title: t("Are you sure you want to delete this YouTube link?"),
-      okText: t("Yes"),
+      title: t("Вы действительно хотите удалить YouTube?"),
+      okText: t("да"),
       okType: "danger",
-      cancelText: t("No"),
+      cancelText: t("нет"),
       onOk: () => deleteAction(id),
     });
   };
@@ -37,15 +42,17 @@ const YouTube = () => {
         { method: "delete", url: `/youtubes/${id}`, data: null },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["youtubes"] });
-            notification.success({
-              message: t("Successfully deleted"),
+            queryClient.invalidateQueries({
+              queryKey: [`youtubes`],
+            });
+            notification["success"]({
+              message: t("Успешно удалена"),
               duration: 2,
             });
           },
           onError: (error: any) => {
-            notification.error({
-              message: get(error, "errorMessage", t("An error occurred!")),
+            notification["error"]({
+              message: get(error, "errorMessage", t("Произошло ошибка!")),
               duration: 2,
             });
           },
@@ -58,6 +65,7 @@ const YouTube = () => {
     <div className="flex">
       <Modal
         open={createModal}
+        onOk={() => showCreateModal(true)}
         onCancel={() => showCreateModal(false)}
         footer={null}
         centered
@@ -65,10 +73,11 @@ const YouTube = () => {
         width={500}
         destroyOnClose
       >
-        <Method {...{ showCreateModal, setSuccess, successed }} />
+        <Create {...{ showCreateModal, setSuccess, successed }} />
       </Modal>
       <Modal
         open={editModal}
+        onOk={() => showEditModal(true)}
         onCancel={() => showEditModal(false)}
         footer={null}
         centered
@@ -76,11 +85,11 @@ const YouTube = () => {
         width={500}
         destroyOnClose
       >
-        <Method {...{ showEditModal, selectedCard, setSuccess, successed }} />
+        <Update {...{ showEditModal, selectedCard }} />
       </Modal>
       <div>
-        <Container.All name="youtubes" url="/youtubes" params={{page, limit:8}}>
-          {({ items, isLoading, meta }) => {
+        <Container.All name="youtubes" url="/youtubes">
+          {({ items }) => {
             return (
               <div>
                 <Button
@@ -89,54 +98,44 @@ const YouTube = () => {
                   size="large"
                   onClick={() => showCreateModal(true)}
                 />
-                {meta && meta.perPage && (
-                <div className="mt-[20px] flex justify-center">
-                  <Pagination
-                    current={meta.currentPage}
-                    pageSize={meta.perPage}
-                    total={(meta.totalCount)}
-                    onChange={(page: any) => {
-                      setPage(page)
-                      window.scrollTo({
-                        behavior: "smooth",
-                        top: 0,
-                        left: 0
-                      })
-                    }}
-                  />
-                </div>
-              )}
-                <div className="grid grid-cols-4 gap-4 mt-8">
-                  {items.map((card) => (
-                    <div key={get(card, "_id", "")}>
-                      <Card hoverable style={{ width: 300, marginRight: 15 }}>
-                        <Meta
-                          className="pb-16"
-                          title={
-                            <div>
-                              <p>{get(card, "link", "")}</p>
+                <div className="grid grid-cols-4 gap-4 mt-[30px]">
+                  {items.map((card) => {
+                    return (
+                      <>
+                        <div>
+                          <Card
+                            hoverable
+                            style={{ width: 300, marginRight: 15 }}
+                          >
+                            <Meta
+                              className="pb-[60px]"
+                              title={
+                                <div className="">
+                                  <p>{(get(card, "link", ""))}</p>
+                                </div>
+                              }
+                            />
+                            <div className="btnPanel">
+                              <div
+                                className="editBtn"
+                                onClick={() => onEdit(card)}
+                              >
+                                <Edit />
+                              </div>
+                              <div
+                                onClick={() =>
+                                  onDeleteHandler(get(card, "_id", ""))
+                                }
+                                className="deleteBtn"
+                              >
+                                <Delete />
+                              </div>
                             </div>
-                          }
-                        />
-                        <div className="btnPanel">
-                          <div
-                            className="editBtn"
-                            onClick={() => onEdit(card)}
-                          >
-                            <Edit />
-                          </div>
-                          <div
-                            className="deleteBtn"
-                            onClick={() =>
-                              onDeleteHandler(get(card, "_id", ""))
-                            }
-                          >
-                            <Delete />
-                          </div>
+                          </Card>
                         </div>
-                      </Card>
-                    </div>
-                  ))}
+                      </>
+                    );
+                  })}
                 </div>
               </div>
             );

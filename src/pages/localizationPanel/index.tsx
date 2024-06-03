@@ -92,24 +92,6 @@ const Localization = () => {
                       );
                     },
                   },
-                  // {
-                  //   key: "kr",
-                  //   title: t("Xitoy alifbosi"),
-                  //   dataIndex: "kr",
-                  //   className: "class",
-                  //   render: (value, data) => {
-                  //     return (
-                  //       <div>
-                  //         <Input
-                  //           defaultValue={value}
-                  //           onChange={(e) => {
-                  //             handleTranslationInput(e, data, "kr");
-                  //           }}
-                  //         />
-                  //       </div>
-                  //     );
-                  //   },
-                  // },
                   {
                     key: "en",
                     title: t("Ingliz tilida"),

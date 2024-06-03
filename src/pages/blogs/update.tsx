@@ -56,6 +56,7 @@ const Blog = ({ showEditModal, selectedCard }: any): JSX.Element => {
           {
             name: "image",
             required: true,
+            value: get(selectedCard, "image[0].small")
           },
         ]}
         onSuccess={(data, resetForm, query) => {
