@@ -4,7 +4,7 @@ import { Container } from "modules";
 import { Button, Spin, Select, Tabs } from "antd";
 import { useHooks } from "hooks";
 
-const Partner = ({ showEditModal, selectedCard, system }: any): JSX.Element => {
+const Partner = ({ showEditModal, selectedCard }: any): JSX.Element => {
   const { get, t } = useHooks();
   const { TabPane } = Tabs;
   const { Option } = Select;
@@ -89,11 +89,11 @@ const Partner = ({ showEditModal, selectedCard, system }: any): JSX.Element => {
           },
           {
             name: "image02",
-            value: get(selectedCard, "image[0].image[0].small")
+            value: get(selectedCard, "image[0].image02[0].small")
           },
           {
             name: "image03",
-            value: get(selectedCard, "image[0].image[0].small")
+            value: get(selectedCard, "image[0].image03[0].small")
           },
         ]}
         onSuccess={(data, resetForm, query) => {
@@ -113,17 +113,14 @@ const Partner = ({ showEditModal, selectedCard, system }: any): JSX.Element => {
                     {({ field, form }: FieldProps) => (
                       <Select
                         rootClassName="mb-[20px] w-full"
-                        defaultValue="unripeUz"
                         size={"large"}
                         onChange={(value: any) => {
                           form.setFieldValue(field.name, value);
                           changePattern(value, form.setFieldValue);
                         }}
                       >
-                        <Option value={"unripeUz"}>{t("xom")}</Option>
-                        <Option value={"halfReadyUz"}>
-                          {t("yarim tayyor")}
-                        </Option>
+                        <Option value={"Xom tovuq"}>{t("Xom tovuq")}</Option>
+                        <Option value={"Yarim tayyor ovqat"}>{t("Yarim tayyor ovqat")}</Option>
                       </Select>
                     )}
                   </Field>
@@ -150,17 +147,14 @@ const Partner = ({ showEditModal, selectedCard, system }: any): JSX.Element => {
                     {({ field, form }: FieldProps) => (
                       <Select
                         rootClassName="mb-[20px] w-full"
-                        defaultValue="unripeRu"
                         size={"large"}
                         onChange={(value: any) => {
                           form.setFieldValue(field.name, value);
                           changePattern(value, form.setFieldValue);
                         }}
                       >
-                        <Option value={"unripeRu"}>{t("xom")}</Option>
-                        <Option value={"halfReadyRu"}>
-                          {t("yarim tayyor")}
-                        </Option>
+                        <Option value={"Сырые куриные"}>{t("Сырые куриные")}</Option>
+                        <Option value={"Полуфабрикаты"}>{t("Полуфабрикаты")}</Option>
                       </Select>
                     )}
                   </Field>
@@ -187,17 +181,14 @@ const Partner = ({ showEditModal, selectedCard, system }: any): JSX.Element => {
                     {({ field, form }: FieldProps) => (
                       <Select
                         rootClassName="mb-[20px] w-full"
-                        defaultValue="unripeEng"
                         size={"large"}
                         onChange={(value: any) => {
                           form.setFieldValue(field.name, value);
                           changePattern(value, form.setFieldValue);
                         }}
                       >
-                        <Option value={"unripeEng"}>{t("xom")}</Option>
-                        <Option value={"halfReadyEng"}>
-                          {t("yarim tayyor")}
-                        </Option>
+                        <Option value={"Raw Chicken"}>{t("Raw Chicken")}</Option>
+                        <Option value={"Half-ready food"}>{t("Half-ready food")}</Option>
                       </Select>
                     )}
                   </Field>
