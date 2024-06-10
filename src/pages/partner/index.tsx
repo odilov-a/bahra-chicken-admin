@@ -53,7 +53,7 @@ const Partner = () => {
         onCancel={() => showCreateModal({ open: false, data: {} })}
         footer={null}
         centered
-        title={get(createModal, "data._id") ? t("Update portfolio") : t("Create portfolio")}
+        title={get(createModal, "data._id") ? t("Update partner") : t("Create partner")}
         width={500}
         destroyOnClose
       >
