@@ -55,7 +55,7 @@ const Localization = () => {
   return (
     <div>
       <Header {...{setSearchWord}}/>
-      <h1>{t("Localization")}</h1>
+      <div className="mt-3"></div>
       <Container.All
         url={`/translations/${inputValueDebouncedSearch && "search/" + inputValueDebouncedSearch}`}
         name='localization'

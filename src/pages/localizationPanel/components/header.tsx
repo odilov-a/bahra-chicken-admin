@@ -7,7 +7,6 @@ const Header = ({setSearchWord}:any) => {
 
   return (
     <div>
-      <h1>{t("Header")}</h1>
       <Formik initialValues={{ search: "" }} onSubmit={() => {}}>
         {() => {
           return (

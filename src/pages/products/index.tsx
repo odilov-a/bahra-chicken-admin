@@ -68,7 +68,7 @@ const Product = () => {
         footer={null}
         centered
         title={t("More informaiton")}
-        width={800}
+        width={850}
         destroyOnClose
       >
         <More {...{ showMoreModal, moreModal }} />
