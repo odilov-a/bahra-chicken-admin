@@ -1,32 +1,18 @@
 import { useState } from "react";
-import { Card, Modal, notification, Pagination } from "antd";
+import { Modal, notification, Pagination, Row, Col  } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
-import Update from "./update";
 import Create from "./create";
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
+import More from "./more";
 
 const Product = () => {
   const { get, queryClient, t } = useHooks();
-  const { Meta } = Card;
-  const [editModal, showEditModal] = useState(false);
-  const [createModal, showCreateModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({});
+  const [createModal, showCreateModal] = useState({ open: false, data: {} });
+  const [moreModal, showMoreModal] = useState({ open: false, data: {} });
   const [page, setPage] = useState(1);
-  const [successed, setSuccess] = useState<boolean>(false);
-  const [modal, setModal] = useState<{
-    isOpen: boolean;
-    data: null;
-  }>({
-    isOpen: false,
-    data: null,
-  });
   const { mutate } = usePost();
-  const onEdit = (item: object) => {
-    showEditModal(true);
-    setSelectedCard(item);
-  };
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
       title: t("Вы действительно хотите удалить product?"),
@@ -65,28 +51,27 @@ const Product = () => {
   return (
     <div className="flex">
       <Modal
-        open={createModal}
-        onOk={() => showCreateModal(true)}
-        onCancel={() => showCreateModal(false)}
+        open={createModal.open}
+        onCancel={() => showCreateModal({ open: false, data: {} })}
         footer={null}
         centered
-        title={t("Create product")}
+        title={get(createModal, "data._id") ? t("Update product") : t("Create product")}
         width={900}
         destroyOnClose
       >
-        <Create {...{ showCreateModal, setSuccess, successed }} />
+        <Create {...{ showCreateModal, createModal }} />
       </Modal>
       <Modal
-        open={editModal}
-        onOk={() => showEditModal(true)}
-        onCancel={() => showEditModal(false)}
+        open={moreModal?.open}
+        onOk={() => showMoreModal({ open: true, data: {} })}
+        onCancel={() => showMoreModal({ open: false, data: {} })}
         footer={null}
         centered
-        title={t("Edit product")}
-        width={900}
+        title={t("More informaiton")}
+        width={800}
         destroyOnClose
       >
-        <Update {...{ showEditModal, selectedCard }} />
+        <More {...{ showMoreModal, moreModal }} />
       </Modal>
       <div>
         <Container.All name="products" url="/products" 
@@ -95,7 +80,7 @@ const Product = () => {
             limit: 8,
           }}
         >
-          {({ items, isLoading, meta }) => {
+          {({ items, meta }) => {
             return (
               <div>
                 <div className="flex justify-between">
@@ -103,7 +88,7 @@ const Product = () => {
                   title={t("Create product")}
                   icon={<CreateDoc />}
                   size="large"
-                  onClick={() => showCreateModal(true)}
+                  onClick={() => showCreateModal({ open: true, data: {} })}
                 />
                 {meta && meta.perPage && (
                 <div className="mt-[20px] flex justify-center">
@@ -123,55 +108,46 @@ const Product = () => {
                 </div>
               )}
               </div>
-                <div className="grid grid-cols-4 gap-4 mt-[30px]">
+              <Row
+                  className="h-[120px] mt-[15px]"
+                >
                   {items.map((card) => {
                     return (
                       <>
-                        <div>
-                          <Card
-                            hoverable
-                            style={{ width: 300, marginRight: 20 }}
-                            cover={
-                              <img alt="alt" className="object-cover h-48 w-96" src={get(card, "image[0].image[0].medium")} />
-                            }
+                        <Col className="flex items-baseline justify-center cursor-pointer"
+                          onClick={() => (
+                              showMoreModal({ open: true, data: card })
+                            )}
                           >
-                            <Meta
-                              className="pb-[50px]"
-                              title={
-                                <div className="">
-                                  <p>{t("Nomi")} - {(get(card, "title", ""))}</p>
-                                  <p>{t("Narxi")} - {(get(card, "price", ""))}</p>
-                                  <p>{t("Turi")} - {(get(card, "type", ""))}</p>
-                                </div>
-                              }
-                              description={
-                                <div className="scrollable-div">
-                                  <p>{t("Tavsifi")} - {(get(card, "description", ""))}</p>
-                                </div>
-                              }
-                            />
-                            <div className="btnPanel">
+                          <div className="mr-8 mb-4">
+                          <img className="object-cover rounded-[10px] w-[260px] h-[200px]" src={get(card, "image[0].medium")} />
+                          <div className="btnPanel2">
                               <div
                                 className="editBtn"
-                                onClick={() => onEdit(card)}
+                                onClick={(e) => (
+                                e.stopPropagation(),
+                                showCreateModal({ open: true, data: card })
+                              )}
                               >
                                 <Edit />
                               </div>
                               <div
-                                onClick={() =>
-                                  onDeleteHandler(get(card, "_id", ""))
-                                }
                                 className="deleteBtn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onDeleteHandler(get(card, "_id", ""));
+                                }}
                               >
                                 <Delete />
                               </div>
                             </div>
-                          </Card>
-                        </div>
+                          </div>
+                          
+                        </Col>
                       </>
                     );
                   })}
-                </div>
+                </Row>
               </div>
             );
           }}

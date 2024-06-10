@@ -1,6 +1,6 @@
 import { Spin } from "antd";
 import { Field } from "formik";
-import { Fields, Button } from "components";
+import { Fields, Button, AntTextarea } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
@@ -129,9 +129,9 @@ const Blog = ({ showCreateModal, createModal }: any): JSX.Element => {
                     size="large"
                   />
                   <Field
+                    component={Fields.Textarea}
                     label={t("descriptionEn")}
                     rootClassName="mb-[10px]"
-                    component={Fields.Textarea}
                     name="descriptionEng"
                     type="text"
                     placeholder={t("descriptionEn")}

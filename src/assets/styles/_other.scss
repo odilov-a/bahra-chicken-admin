@@ -372,3 +372,7 @@ body.dark {
   overflow-y: auto; /* Add vertical scrollbar */
   /* Optionally, you can add other styles here */
 }
+
+.ant-upload-list-item-done {
+  z-index: 0 !important;
+}

@@ -8,6 +8,7 @@ import FileUpload from "./fileUpload";
 import AntAsyncSelect from "./ant-async-select";
 import AsyncSelect from "./AsyncSelect";
 import Textarea from "./textarea";
+import SelectNew from "./selectNew";
 
 export default {
   Input,
@@ -20,4 +21,5 @@ export default {
   AntAsyncSelect,
   AsyncSelect,
   Textarea,
+  SelectNew,
 };

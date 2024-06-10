@@ -1,22 +1,17 @@
-import { Spin, Select, Tabs } from "antd";
-import { Field, FieldProps } from "formik";
+import { Spin, } from "antd";
+import { Field } from "formik";
 import { Fields, Button, AntTextarea } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
-const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
-  const { t } = useHooks();
-  const { TabPane } = Tabs;
-  const { Option } = Select;
-  const changePattern = (value: any, setFieldValue: any) => {
-    setFieldValue("type", value);
-    console.log("Pattern changed to:", value);
-  };
+const Product = ({ showCreateModal, createModal }: any): JSX.Element => {
+  const { t, get } = useHooks();
+  let data = createModal.data && createModal?.data;
   return (
     <div>
       <Container.Form
-        url="/products"
-        method="post"
+        url={data._id ? `products/${get(data, "_id")}` : "products"}
+        method={data._id ? "put" : "post"}
         name="products"
         configs={{
           headers: { "Content-Type": "multipart/form-data" },
@@ -26,66 +21,61 @@ const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
             name: "titleUz",
             type: "string",
             required: true,
+            value: get(data, "titleUz"),
           },
           {
             name: "titleRu",
             type: "string",
             required: true,
+            value: get(data, "titleRu"),
           },
           {
             name: "titleEng",
             type: "string",
             required: true,
+            value: get(data, "titleEng"),
           },
           {
             name: "descriptionUz",
             type: "string",
             required: true,
+            value: get(data, "descriptionUz"),
           },
           {
             name: "descriptionRu",
             type: "string",
             required: true,
+            value: get(data, "descriptionRu"),
           },
           {
             name: "descriptionEng",
             type: "string",
             required: true,
+            value: get(data, "descriptionEng"),
           },
           {
-            name: "price",
-            type: "number",
+            name: "type",
+            type: get(data, "_id") ? "number" : "object",
+            onSubmitValue: (value: any) => value.value,
             required: true,
-          },
-          {
-            name: "typeEng",
-            type: "string",
-            required: true,
-          },
-          {
-            name: "typeRu",
-            type: "string",
-            required: true,
-          },
-          {
-            name: "typeUz",
-            type: "string",
-            required: true,
+            value: get(data, "type"),
           },
           {
             name: "image",
             required: true,
+            value: get(data, "image[0].small"),
           },
           {
             name: "image02",
+            value: get(data, "image02[0].small"),
           },
           {
             name: "image03",
+            value: get(data, "image03[0].small"),
           },
         ]}
         onSuccess={(data, resetForm, query) => {
           query.invalidateQueries({ queryKey: ["products"] });
-          setSuccess((prev: any) => !prev);
           resetForm();
           showCreateModal(false);
         }}
@@ -93,28 +83,16 @@ const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
           console.log("Error", error);
         }}
       >
-        {({ isSubmitting, setFieldValue }) => {
+        {({ isLoading, setFieldValue, errors, values }) => {
+          console.log({errors}, {values});
+          
           return (
-            <Spin spinning={isSubmitting} tip="Verifying">
-              <Tabs defaultActiveKey="uz" className="w-full">
-                <TabPane tab={t("Uzbek")} key="uz">
-                  <Field name="typeUz">
-                    {({ field, form }: FieldProps) => (
-                      <Select
-                        rootClassName="mb-[20px] w-full"
-                        size={"large"}
-                        onChange={(value: any) => {
-                          form.setFieldValue(field.name, value);
-                          changePattern(value, form.setFieldValue);
-                        }}
-                      >
-                        <Option value={"Xom tovuq"}>{t("Xom tovuq")}</Option>
-                        <Option value={"Yarim tayyor ovqat"}>{t("Yarim tayyor ovqat")}</Option>
-                      </Select>
-                    )}
-                  </Field>
+            <Spin spinning={isLoading} tip="Verifying">
+              <div className="flex justify-between">
+                <div className="w-[48%]">
                   <Field
-                    rootClassName="mb-[20px]"
+                    label={t("titleUz")}
+                    rootClassName="mb-[10px]"
                     component={Fields.Input}
                     name="titleUz"
                     type="text"
@@ -122,33 +100,8 @@ const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                     size="large"
                   />
                   <Field
-                    rootClassName=" w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
-                    component={AntTextarea}
-                    name="descriptionUz"
-                    type="text"
-                    placeholder={t("descriptionUz")}
-                    rows={3}
-                    size="large"
-                  />
-                </TabPane>
-                <TabPane tab={t("Russian")} key="ru">
-                  <Field name="typeRu">
-                    {({ field, form }: FieldProps) => (
-                      <Select
-                        rootClassName="mb-[20px] w-full"
-                        size={"large"}
-                        onChange={(value: any) => {
-                          form.setFieldValue(field.name, value);
-                          changePattern(value, form.setFieldValue);
-                        }}
-                      >
-                        <Option value={"Сырые куриные"}>{t("Сырые куриные")}</Option>
-                        <Option value={"Полуфабрикаты"}>{t("Полуфабрикаты")}</Option>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field
-                    rootClassName="mb-[20px]"
+                    label={t("titleRu")}
+                    rootClassName="mb-[10px]"
                     component={Fields.Input}
                     name="titleRu"
                     type="text"
@@ -156,92 +109,83 @@ const Product = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                     size="large"
                   />
                   <Field
-                    rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
-                    component={AntTextarea}
-                    name="descriptionRu"
-                    type="text"
-                    placeholder={t("descriptionRu")}
-                    rows={3}
-                    size="large"
-                  />
-                </TabPane>
-                <TabPane tab={t("English")} key="en">
-                  <Field name="typeEng">
-                    {({ field, form }: FieldProps) => (
-                      <Select
-                        rootClassName="mb-[20px] w-full"
-                        size={"large"}
-                        onChange={(value: any) => {
-                          form.setFieldValue(field.name, value);
-                          changePattern(value, form.setFieldValue);
-                        }}
-                      >
-                        <Option value={"Raw Chicken"}>{t("Raw Chicken")}</Option>
-                        <Option value={"Half-ready food"}>{t("Half-ready food")}</Option>
-                      </Select>
-                    )}
-                  </Field>
-                  <Field
-                    rootClassName="mb-[20px]"
+                    label={t("titleEng")}
+                    rootClassName="mb-[10px]"
                     component={Fields.Input}
                     name="titleEng"
                     type="text"
-                    placeholder={t("titleEn")}
+                    placeholder={t("titleEng")}
                     size="large"
                   />
                   <Field
-                    rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
-                    component={AntTextarea}
-                    name="descriptionEng"
-                    type="text"
-                    placeholder={t("descriptionEn")}
-                    rows={3}
-                    size="large"
+                    component={Fields.SelectNew}
+                    name="type"
+                    placeholder={"Mahsulot turi"}
+                    label={("Mahsulot turi")}
+                    optionLabel="label"
+                    optionValue="value"
+                    options={[
+                      { value: 1, label: "Xom tovuq" },
+                      { value: 2, label: "Yarim tayyor" },
+                    ]}
+                    onChange={(option: { [key: string]: any }) => {
+                      setFieldValue("type", option.value);
+                    }}
+                    rootClassName="mb-[10px]"
                   />
-                </TabPane>
-                <TabPane tab={t("Info")} key="zh">
-                  <div className="">
-                    <div className="flex">
-                      <Field
-                        component={Fields.FileUpload}
-                        setFieldValue={setFieldValue}
-                        rootClassName="mb-[25px]"
-                        name="image"
-                        accept="image/png, image/jpeg, image/jpg"
-                      />
-                      <Field
-                        component={Fields.FileUpload}
-                        setFieldValue={setFieldValue}
-                        rootClassName="mb-[25px]"
-                        name="image02"
-                        accept="image/png, image/jpeg, image/jpg"
-                      />
-                      <Field
-                        component={Fields.FileUpload}
-                        setFieldValue={setFieldValue}
-                        rootClassName="mb-[25px]"
-                        name="image03"
-                        accept="image/png, image/jpeg, image/jpg"
-                      />
-                    </div>
+                    <label>{t("Rasm yuklash")}</label>
+                  <div className="flex">
                     <Field
-                      rootClassName="mb-[20px]"
-                      component={Fields.Input}
-                      name="price"
-                      type="number"
-                      placeholder={t("price")}
-                      size="large"
+                      component={Fields.FileUpload}
+                      setFieldValue={setFieldValue}
+                      name="image"
+                      accept="image/png, image/jpeg, image/jpg"
                     />
-                    <div></div>
+                    <Field
+                      component={Fields.FileUpload}
+                      setFieldValue={setFieldValue}
+                      name="image02"
+                      accept="image/png, image/jpeg, image/jpg"
+                    />
+                    <Field
+                      component={Fields.FileUpload}
+                      setFieldValue={setFieldValue}
+                      name="image03"
+                      accept="image/png, image/jpeg, image/jpg"
+                    />
                   </div>
-                  <Button
-                    title={t("Saqlash")}
-                    className="w-full mt-[20px]"
-                    htmlType="submit"
-                    size="large"
+                </div>
+                <div className="w-[48%]">
+                  <Field
+                    component={Fields.Textarea}
+                    name="descriptionUz"
+                    rows={3}
+                    rootClassName="mb-[10px]"
+                    label={t("Ma'lumot (Uzbekcha)")}
+                    placeholder={t("Ma'lumot (Uzbekcha)")}
+                    required
                   />
-                </TabPane>
-              </Tabs>
+                  <Field
+                    component={Fields.Textarea}
+                    name="descriptionRu"
+                    rows={3}
+                    rootClassName="mb-[10px]"
+                    label={t("Ma'lumot (Ruscha)")}
+                    placeholder={t("Ma'lumot (Ruscha)")}
+                    required
+                  />
+                  <Field
+                    component={Fields.Textarea}
+                    name="descriptionEng"
+                    rows={3}
+                    rootClassName="mb-[10px]"
+                    label={t("Ma'lumot (Inglizcha)")}
+                    placeholder={t("Ma'lumot (Inglizcha)")}
+                    required
+                  />
+                  <Button title={t("Saqlash")} className="w-full mt-[40px]" htmlType="submit" size="large" />
+                </div>
+              </div>
             </Spin>
           );
         }}

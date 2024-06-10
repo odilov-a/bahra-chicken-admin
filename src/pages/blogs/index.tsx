@@ -5,7 +5,6 @@ import { useHooks, usePost } from "hooks";
 import { Button } from "components";
 import Create from "./create";
 import More from "./more";
-
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
 
 const Blog = () => {
@@ -79,7 +78,7 @@ const Blog = () => {
         <Container.All name="blogs" url="/blogs" 
         params={{
           page,
-          limit: 2,
+          limit: 8,
         }}
         >
           {({ items, meta }) => {
@@ -110,60 +109,46 @@ const Blog = () => {
                 </div>
               )}
                 </div>
-                <div className="grid grid-cols-4 gap-4 mt-[30px]">
+                <Row
+                  className="h-[120px] mt-[15px]"
+                >
                   {items.map((card) => {
                     return (
                       <>
-                        <div>
-                          <Card
-                            onClick={() => (
+                        <Col className="flex items-baseline justify-center cursor-pointer"
+                          onClick={() => (
                               showMoreModal({ open: true, data: card })
                             )}
-                            hoverable
-                            style={{ width: 300, marginRight: 15 }}
-                            cover={
-                              <img alt="alt" className="object-cover h-48 w-96" src={get(card, "image[0].medium")} />
-                            }
                           >
-                            <Meta
-                              className="pb-[60px]"
-                              title={
-                                <div className="">
-                                  <p>{t("Nomi")} - {(get(card, "title", ""))}</p>
-                                </div>
-                              }
-                              description={
-                                <div className="scrollable-div">
-                                  <p>{t("Tavsifi")} - {(get(card, "description", ""))}</p>
-                                </div>
-                              }
-                            />
-                            <div className="btnPanel2">
-                            <div
-                            className="editBtn"
-                            onClick={(e) => (
-                              e.stopPropagation(),
-                              showCreateModal({ open: true, data: card })
-                            )}
+                          <div className="mr-8 mb-4">
+                          <img className="object-cover rounded-[10px] w-[260px] h-[200px]" src={get(card, "image[0].medium")} />
+                          <div className="btnPanel2">
+                              <div
+                                className="editBtn"
+                                onClick={(e) => (
+                                e.stopPropagation(),
+                                showCreateModal({ open: true, data: card })
+                              )}
                               >
                                 <Edit />
                               </div>
                               <div
-                              className="deleteBtn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onDeleteHandler(get(card, "_id", ""));
-                              }}
+                                className="deleteBtn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onDeleteHandler(get(card, "_id", ""));
+                                }}
                               >
                                 <Delete />
                               </div>
                             </div>
-                          </Card>
-                        </div>
+                          </div>
+                          
+                        </Col>
                       </>
                     );
                   })}
-                </div>
+                </Row>
               </div>
             );
           }}
