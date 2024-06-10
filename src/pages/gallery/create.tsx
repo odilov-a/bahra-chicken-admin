@@ -4,16 +4,14 @@ import { Fields, Button } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
-const Gallery = ({
-  showCreateModal,
-  setSuccess,
-}: any): JSX.Element => {
-  const { t } = useHooks();
+const Gallery = ({ showCreateModal, createModal }: any): JSX.Element => {
+  const { t, get } = useHooks();
+  let data = createModal.data && createModal?.data;
   return (
     <div>
       <Container.Form
-        url="/galleries"
-        method="post"
+        url={data._id ? `galleries/${get(data, "_id")}` : "galleries"}
+        method={data._id ? "put" : "post"}
         name="galleries"
         configs={{
           headers: { "Content-Type": "multipart/form-data" },
@@ -22,11 +20,11 @@ const Gallery = ({
           {
             name: "image",
             required: true,
+            value: get(data, "image[0].small"),
           },
         ]}
         onSuccess={(data, resetForm, query) => {
           query.invalidateQueries({ queryKey: ["galleries"] });
-          setSuccess((prev: any) => !prev);
           resetForm();
           showCreateModal(false);
         }}
@@ -36,17 +34,17 @@ const Gallery = ({
       >
         {({ isSubmitting, setFieldValue }) => {
           return (
-            <Spin spinning={isSubmitting} tip="Verifying">              
+            <Spin spinning={isSubmitting} tip="Verifying">   
+            <label>{t("Rasmni yuklang")}</label>
               <Field
                 component={Fields.FileUpload}
                 setFieldValue={setFieldValue}
-                rootClassName="mb-[40px]"
                 name="image"
                 accept="image/png, image/jpeg, image/jpg"
               />
               <Button
                 title={t("Saqlash")}
-                className="w-full mt-[20px]"
+                className="w-full mt-[10px]"
                 htmlType="submit"
                 size="large"
               />

@@ -1,17 +1,17 @@
-import { Spin, Tabs } from "antd";
+import { Spin } from "antd";
 import { Field } from "formik";
-import { Fields, Button, AntTextarea } from "components";
+import { Fields, Button } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
-const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
-  const { t } = useHooks();
-  const { TabPane } = Tabs;
+const Blog = ({ showCreateModal, createModal }: any): JSX.Element => {
+  const { t, get } = useHooks();
+  let data = createModal.data && createModal?.data;
   return (
     <div>
       <Container.Form
-        url="/blogs"
-        method="post"
+        url={data._id ? `blogs/${get(data, "_id")}` : "blogs"}
+        method={data._id ? "put" : "post"}
         name="blogs"
         configs={{
           headers: { "Content-Type": "multipart/form-data" },
@@ -20,41 +20,47 @@ const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
           {
             name: "titleUz",
             type: "string",
+            value: get(data, "titleUz"),
             required: true,
           },
           {
             name: "titleRu",
             type: "string",
+            value: get(data, "titleRu"),
             required: true,
           },
           {
             name: "titleEng",
             type: "string",
+            value: get(data, "titleEng"),
             required: true,
           },
           {
             name: "descriptionUz",
             type: "string",
+            value: get(data, "descriptionUz"),
             required: true,
           },
           {
             name: "descriptionRu",
             type: "string",
+            value: get(data, "descriptionRu"),
             required: true,
           },
           {
             name: "descriptionEng",
             type: "string",
+            value: get(data, "descriptionEng"),
             required: true,
           },
           {
             name: "image",
             required: true,
+            value: get(data, "image[0].small"),
           },
         ]}
         onSuccess={(data, resetForm, query) => {
           query.invalidateQueries({ queryKey: ["blogs"] });
-          setSuccess((prev: any) => !prev);
           resetForm();
           showCreateModal(false);
         }}
@@ -65,10 +71,11 @@ const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
         {({ isSubmitting, setFieldValue }) => {
           return (
             <Spin spinning={isSubmitting} tip="Verifying">
-              <Tabs defaultActiveKey="uz" className="w-full">
-                <TabPane tab={t("Uzbek")} key="uz">
+              <div className="flex justify-between">
+                <div className="w-[48%]">
                   <Field
-                    rootClassName="mb-[30px]"
+                    rootClassName="mb-[10px]"
+                    label={t("titleUz")}
                     component={Fields.Input}
                     name="titleUz"
                     type="text"
@@ -76,18 +83,8 @@ const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                     size="large"
                   />
                   <Field
-                    rootClassName=" w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
-                    component={AntTextarea}
-                    name="descriptionUz"
-                    type="text"
-                    placeholder={t("descriptionUz")}
-                    rows={3}
-                    size="large"
-                  />
-                </TabPane>
-                <TabPane tab={t("Russian")} key="ru">
-                  <Field
-                    rootClassName="mb-[30px]"
+                    rootClassName="mb-[10px]"
+                    label={t("titleRu")}
                     component={Fields.Input}
                     name="titleRu"
                     type="text"
@@ -95,18 +92,8 @@ const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                     size="large"
                   />
                   <Field
-                    rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
-                    component={AntTextarea}
-                    name="descriptionRu"
-                    type="text"
-                    placeholder={t("descriptionRu")}
-                    rows={3}
-                    size="large"
-                  />
-                </TabPane>
-                <TabPane tab={t("English")} key="en">
-                  <Field
-                    rootClassName="mb-[30px]"
+                    rootClassName="mb-[10px]"
+                    label={t("titleEn")}
                     component={Fields.Input}
                     name="titleEng"
                     type="text"
@@ -114,35 +101,51 @@ const Blog = ({ showCreateModal, setSuccess }: any): JSX.Element => {
                     size="large"
                   />
                   <Field
-                    rootClassName="w-full bg-[#E6ECFE] dark:bg-[#454d70] py-[10px] px-[15px] border-2 rounded-[12px] dark:bg-[#30354E] placeholder-[#9EA3B5] border-[#9EA3B5] dark:text-[#fff]"
-                    component={AntTextarea}
+                    component={Fields.FileUpload}
+                    setFieldValue={setFieldValue}
+                    name="image"
+                    accept="image/png, image/jpeg, image/jpg"
+                  />
+                </div>
+                <div className="w-[48%]">
+                  <Field
+                    component={Fields.Textarea}
+                    rootClassName="mb-[10px]"
+                    label={t("descriptionUz")}
+                    name="descriptionUz"
+                    type="text"
+                    placeholder={t("descriptionUz")}
+                    rows={3}
+                    size="large"
+                  />
+                  <Field
+                    component={Fields.Textarea}
+                    rootClassName="mb-[10px]"
+                    label={t("descriptionRu")}
+                    name="descriptionRu"
+                    type="text"
+                    placeholder={t("descriptionRu")}
+                    rows={3}
+                    size="large"
+                  />
+                  <Field
+                    label={t("descriptionEn")}
+                    rootClassName="mb-[10px]"
+                    component={Fields.Textarea}
                     name="descriptionEng"
                     type="text"
                     placeholder={t("descriptionEn")}
                     rows={3}
                     size="large"
                   />
-                </TabPane>
-                <TabPane tab={t("Info")} key="zh">
-                  <div className="flex justify-center">
-                    <div className="flex gap-[70px]">
-                      <Field
-                        component={Fields.FileUpload}
-                        setFieldValue={setFieldValue}
-                        rootClassName="mb-[30px]"
-                        name="image"
-                        accept="image/png, image/jpeg, image/jpg"
-                      />
-                    </div>
-                  </div>
-                  <Button
-                    title={t("Saqlash")}
-                    className="w-full mt-[20px]"
-                    htmlType="submit"
-                    size="large"
-                  />
-                </TabPane>
-              </Tabs>
+                </div>
+              </div>
+              <Button
+                title={t("Saqlash")}
+                className="w-full mt-[20px]"
+                htmlType="submit"
+                size="large"
+              />
             </Spin>
           );
         }}

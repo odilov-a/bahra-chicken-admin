@@ -3,32 +3,17 @@ import { Col, Row, Modal, notification, Pagination } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
-import Update from "./update";
 import Create from "./create";
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
 
 const Gallery = () => {
   const { get, queryClient, t } = useHooks();
-  const [editModal, showEditModal] = useState(false);
-  const [createModal, showCreateModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({});
+  const [createModal, showCreateModal] = useState({ open: false, data: {} });
   const [page, setPage] = useState(1);
-  const [successed, setSuccess] = useState<boolean>(false);
-  const [modal, setModal] = useState<{
-    isOpen: boolean;
-    data: null;
-  }>({
-    isOpen: false,
-    data: null,
-  });
   const { mutate } = usePost();
-  const onEdit = (item: object) => {
-    showEditModal(true);
-    setSelectedCard(item);
-  };
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
-      title: t("Вы действительно хотите удалить Gallery?"),
+      title: t("Вы действительно хотите удалить gallery?"),
       okText: t("да"),
       okType: "danger",
       cancelText: t("нет"),
@@ -64,45 +49,32 @@ const Gallery = () => {
   return (
     <div className="flex">
       <Modal
-        open={createModal}
-        onOk={() => showCreateModal(true)}
-        onCancel={() => showCreateModal(false)}
+        open={createModal.open}
+        onCancel={() => showCreateModal({ open: false, data: {} })}
         footer={null}
         centered
-        title={t("Create Gallery")}
+        title={get(createModal, "data._id") ? t("Update gallery") : t("Create gallery")}
         width={500}
         destroyOnClose
       >
-        <Create {...{ showCreateModal, setSuccess, successed }} />
-      </Modal>
-      <Modal
-        open={editModal}
-        onOk={() => showEditModal(true)}
-        onCancel={() => showEditModal(false)}
-        footer={null}
-        centered
-        title={t("Edit Gallery")}
-        width={500}
-        destroyOnClose
-      >
-        <Update {...{ showEditModal, selectedCard }} />
+        <Create {...{ showCreateModal, createModal }} />
       </Modal>
       <div>
-        <Container.All name="galleries" url="/galleries" 
+        <Container.All name="galleries" url="/galleries"
           params={{
             page,
             limit: 8,
           }}
         >
-          {({ items, isLoading, meta }) => {
+          {({ items, meta }) => {
             return (
               <div>
                 <div className="flex justify-between">
                 <Button
-                  title={t("Create gallery")}
+                  title={t("Create partner")}
                   icon={<CreateDoc />}
                   size="large"
-                  onClick={() => showCreateModal(true)}
+                  onClick={() => showCreateModal({ open: true, data: {} })}
                 />
                 {meta && meta.perPage && (
                 <div className="mt-[20px] flex justify-center">
@@ -134,20 +106,25 @@ const Gallery = () => {
                           <div className="btnPanel2">
                               <div
                                 className="editBtn"
-                                onClick={() => onEdit(card)}
+                                onClick={(e) => (
+                                e.stopPropagation(),
+                                showCreateModal({ open: true, data: card })
+                              )}
                               >
                                 <Edit />
                               </div>
                               <div
-                                onClick={() =>
-                                  onDeleteHandler(get(card, "_id", ""))
-                                }
                                 className="deleteBtn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onDeleteHandler(get(card, "_id", ""));
+                                }}
                               >
                                 <Delete />
                               </div>
                             </div>
                           </div>
+                          
                         </Col>
                       </>
                     );

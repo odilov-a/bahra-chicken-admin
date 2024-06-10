@@ -1,32 +1,20 @@
 import { useState } from "react";
-import { Card, Modal, notification, Pagination } from "antd";
+import { Card, Modal, Col, Row, notification, Pagination } from "antd";
 import { Container } from "modules";
 import { useHooks, usePost } from "hooks";
 import { Button } from "components";
-import Update from "./update";
 import Create from "./create";
+import More from "./more";
+
 import { Delete, Edit, CreateDoc } from "assets/images/icons";
 
 const Blog = () => {
   const { get, queryClient, t } = useHooks();
   const { Meta } = Card;
-  const [editModal, showEditModal] = useState(false);
-  const [createModal, showCreateModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({});
+  const [createModal, showCreateModal] = useState({ open: false, data: {} });
   const [page, setPage] = useState(1);
-  const [successed, setSuccess] = useState<boolean>(false);
-  const [modal, setModal] = useState<{
-    isOpen: boolean;
-    data: null;
-  }>({
-    isOpen: false,
-    data: null,
-  });
+  const [moreModal, showMoreModal] = useState({ open: false, data: {} });
   const { mutate } = usePost();
-  const onEdit = (item: object) => {
-    showEditModal(true);
-    setSelectedCard(item);
-  };
   const onDeleteHandler = (id: string) => {
     Modal.confirm({
       title: t("Вы действительно хотите удалить blog?"),
@@ -65,47 +53,45 @@ const Blog = () => {
   return (
     <div className="flex">
       <Modal
-        open={createModal}
-        onOk={() => showCreateModal(true)}
-        onCancel={() => showCreateModal(false)}
+        open={createModal.open}
+        onCancel={() => showCreateModal({ open: false, data: {} })}
         footer={null}
         centered
-        title={t("Create blog")}
+        title={get(createModal, "data._id") ? t("Update blog") : t("Create blog")}
         width={900}
         destroyOnClose
       >
-        <Create {...{ showCreateModal, setSuccess, successed }} />
+        <Create {...{ showCreateModal, createModal }} />
       </Modal>
       <Modal
-        open={editModal}
-        onOk={() => showEditModal(true)}
-        onCancel={() => showEditModal(false)}
+        open={moreModal?.open}
+        onOk={() => showMoreModal({ open: true, data: {} })}
+        onCancel={() => showMoreModal({ open: false, data: {} })}
         footer={null}
         centered
-        title={t("Edit blog")}
-        width={900}
+        title={t("More informaiton")}
+        width={700}
         destroyOnClose
       >
-        <Update {...{ showEditModal, selectedCard }} />
+        <More {...{ showMoreModal, moreModal }} />
       </Modal>
       <div>
         <Container.All name="blogs" url="/blogs" 
         params={{
           page,
-          limit: 8,
+          limit: 2,
         }}
         >
-          {({ items, isLoading, meta }) => {
+          {({ items, meta }) => {
             return (
               <div>
                 <div className="flex justify-between">
                 <Button
-                  title={t("Create blog")}
-                  icon={<CreateDoc />}
-                  // isLoading={successed}
-                  size="large"
-                  onClick={() => showCreateModal(true)}
-                />
+                    title={t("Create blog")}
+                    icon={<CreateDoc />}
+                    size="large"
+                    onClick={() => showCreateModal({ open: true, data: {} })}
+                  />
                 {meta && meta.perPage && (
                 <div className="mt-[20px] flex justify-center">
                   <Pagination
@@ -130,6 +116,9 @@ const Blog = () => {
                       <>
                         <div>
                           <Card
+                            onClick={() => (
+                              showMoreModal({ open: true, data: card })
+                            )}
                             hoverable
                             style={{ width: 300, marginRight: 15 }}
                             cover={
@@ -149,18 +138,22 @@ const Blog = () => {
                                 </div>
                               }
                             />
-                            <div className="btnPanel">
-                              <div
-                                className="editBtn"
-                                onClick={() => onEdit(card)}
+                            <div className="btnPanel2">
+                            <div
+                            className="editBtn"
+                            onClick={(e) => (
+                              e.stopPropagation(),
+                              showCreateModal({ open: true, data: card })
+                            )}
                               >
                                 <Edit />
                               </div>
                               <div
-                                onClick={() =>
-                                  onDeleteHandler(get(card, "_id", ""))
-                                }
-                                className="deleteBtn"
+                              className="deleteBtn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onDeleteHandler(get(card, "_id", ""));
+                              }}
                               >
                                 <Delete />
                               </div>
