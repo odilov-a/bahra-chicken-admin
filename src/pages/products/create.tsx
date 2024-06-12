@@ -1,6 +1,6 @@
 import { Spin, } from "antd";
 import { Field } from "formik";
-import { Fields, Button, AntTextarea } from "components";
+import { Fields, Button } from "components";
 import { Container } from "modules";
 import { useHooks } from "hooks";
 
@@ -83,9 +83,7 @@ const Product = ({ showCreateModal, createModal }: any): JSX.Element => {
           console.log("Error", error);
         }}
       >
-        {({ isLoading, setFieldValue, errors, values }) => {
-          console.log({errors}, {values});
-          
+        {({ isLoading, setFieldValue, }) => {
           return (
             <Spin spinning={isLoading} tip="Verifying">
               <div className="flex justify-between">
@@ -125,8 +123,9 @@ const Product = ({ showCreateModal, createModal }: any): JSX.Element => {
                     optionLabel="label"
                     optionValue="value"
                     options={[
-                      { value: 1, label: "Xom tovuq" },
-                      { value: 2, label: "Yarim tayyor" },
+                      { value: 1, label: t("Xom tovuq") },
+                      { value: 2, label: t("Yarim tayyor") },
+                      { value: 3, label: t("Muzlagan") },
                     ]}
                     onChange={(option: { [key: string]: any }) => {
                       setFieldValue("type", option.value);

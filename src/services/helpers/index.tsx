@@ -4,6 +4,8 @@ const getProductType = (i: number) => {
       return "Xom tovuq";
     case 2:
       return "Yarim tayyor";
+    case 3:
+      return "Muzlagan";
     default:
       return "-"
   }
